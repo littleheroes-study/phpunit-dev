@@ -1,0 +1,32 @@
+version: '3.9' # ファイルのバージョン
+
+services:
+  app: # サービス名は任意
+    build: ./php
+    # ↑ビルドコンテキストを指定 → docker buildを実行する際の現在の作業ディレクトリのこと
+    # Dockerfileが置かれているディレクトリ
+    volumes:
+      - ../src:/data # ./srcディレクトリをappのコンテナ内/dataへマウント
+
+  web:
+    # image: nginx:1.20-alpine # nginxは偶数が安定ver.
+    image: nginx:1.22-alpine
+    ports:
+      - 8080:80 # ホスト側:コンテナ側
+    volumes:
+      - ../src:/data
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    working_dir: /data
+
+  db:
+    build: ./mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - db-store:/var/lib/mysql
+
+volumes:
+  db-store:
