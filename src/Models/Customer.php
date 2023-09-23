@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Models;
 
-use App\Models\Customer;
+use App\Models\BaseModel;
 
-class CustomersController
+class Customer extends BaseModel
 {
     /*
     |--------------------------------------------------------------------------
-    | 会員管理
+    | 会員モデル
     |--------------------------------------------------------------------------
     */
     public function index()
     {
-        $customer = new Customer();
-        $customer->index();
         echo "index action";
     }
 
