@@ -2,6 +2,7 @@
 namespace App\Core;
 
 use Exception;
+use App\Core\Request;
 
 class App
 {
@@ -31,7 +32,7 @@ class App
     /**
      * Controller読み込み(汎用的なuse文)
      */   
-    private function setController($controller) : void
+    private function setController($controller): void
     {
         $callController = '\\' . self::CONTROLLER .'\\' . $controller;
         $this->controller = new $callController();
@@ -40,9 +41,9 @@ class App
     /**
      * Action実行
      */
-    public function executeAction()
+    public function executeAction(Request $request)
     {
         $action = $this->action;
-        return $this->controller->$action();
+        return $this->controller->$action($request);
     }
 }

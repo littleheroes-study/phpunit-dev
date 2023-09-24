@@ -1,6 +1,7 @@
 <?php
 use App\Core\Routing;
 use App\Core\Request;
+use App\Core\Config;
 use App\Core\App;
 
 /*
@@ -18,7 +19,7 @@ require __DIR__.'/vendor/autoload.php';
 |------------------------------------------------------------------------
 |
 */
-require __DIR__.'/config/setting.php';
+Config::set_config_directory(__DIR__ . '/Config');
 
 /*
 |------------------------------------------------------------------------
@@ -27,6 +28,7 @@ require __DIR__.'/config/setting.php';
 |
 */
 $routing = new Routing($_SERVER);
+$request = new Request();
 
 
 /*
@@ -38,5 +40,5 @@ $routing = new Routing($_SERVER);
 $controller = $routing->getController();
 $action     = $routing->getAction();
 
-echo (new App($controller, $action))->executeAction();
+echo (new App($controller, $action))->executeAction($request);
 // var_dump('完了');

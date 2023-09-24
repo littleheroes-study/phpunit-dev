@@ -18,7 +18,7 @@ class Request
     /**
      * post/put/deleteの場合のparameters
      */
-    private $parameters;
+    public $parameters;
 
     /**
      * コンストラクター
@@ -86,7 +86,6 @@ class Request
     private function setQueries()
     {
         $gets = $_GET;
-        array_shift($gets);
         $this->queries = $gets;
     }
 
@@ -95,8 +94,8 @@ class Request
      */
     private function setPostParameters()
     {
-        $post = $_POST;
-        if(empty($post) && $_SERVER['CONTENT_TYPE'] === 'application/json')  {
+        $post = [];
+        if($_SERVER['CONTENT_TYPE'] === 'application/json')  {
             $post = json_decode(file_get_contents('php://input'), true);
         }
         $this->parameters = $post;
@@ -104,7 +103,6 @@ class Request
 
     /**
      * PUT, DELETEの場合パラメーターセット
-     * https://qiita.com/chiyoyo/items/8314d938cf596b0a90bd
      */
     private function setPutOrDeleteParameters()
     {

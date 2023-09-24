@@ -9,6 +9,9 @@
     "autoload": {
         "psr-4": {
             "App\\": "./"
-        }
+        },
+        "files": [
+            "./Helpers/helper.php"
+        ]
     }
 }

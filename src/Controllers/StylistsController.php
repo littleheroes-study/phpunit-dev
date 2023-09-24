@@ -2,6 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Models\Stylist;
+use App\Commons\JsonResponse;
+use App\Core\Request;
+use App\Core\Response;
+use App\Enums\StatusCode;
 class StylistsController
 {
     /*
@@ -11,12 +16,27 @@ class StylistsController
     */
     public function index()
     {
-        echo "index action";
+        $stylist = new Stylist();
+        $stylists = $stylist->getAll();
+        return (new JsonResponse)->make(
+            config('response.stylists.index'),
+            $stylists,
+            StatusCode::OK
+        );
     }
 
-    public function detail()
+    public function detail(Request $request)
     {
-        echo "detail action";
+        // リクエスト
+        $salon = new Stylist();
+        $salon = $salon->findById($request->getQuery('id'));
+        // 404
+        return (new JsonResponse)->make(
+            config('response.salons.detail'),
+            $salon,
+            StatusCode::OK,
+            false
+        );
     }
 
     public function create()

@@ -1,3 +1,5 @@
+CREATE DATABASE `mysql_php` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_ja_0900_as_cs_ks */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
 -- mysql_php.customers definition
 
 CREATE TABLE `customers` (

@@ -47,6 +47,7 @@ class Routing
             
             $this->controller = $this->upperCamelize($exploded[1]);
             $this->action = (!empty($exploded[2])) ? $this->lowerCamelize($exploded[2]) : 'index';
+            $this->action = (strpos($this->action, '?')) ? strstr($this->action, '?', true) : $this->action;
             if(!$this->isExistsController())  throw new Exception();
 
         } catch(Exception $e) {

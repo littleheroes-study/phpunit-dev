@@ -2,6 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Models\Salon;
+use App\Commons\JsonResponse;
+use App\Core\Request;
+use App\Core\Response;
+use App\Enums\StatusCode;
+
 class SalonsController
 {
     /*
@@ -11,16 +17,33 @@ class SalonsController
     */
     public function index()
     {
-        echo "index action";
+        $salon = new Salon();
+        $salons = $salon->getAll();
+        return (new JsonResponse)->make(
+            config('response.salons.index'),
+            $salons,
+            StatusCode::OK
+        );
     }
 
-    public function detail()
+    public function detail(Request $request)
     {
-        echo "detail action";
+        // リクエスト
+        $salon = new Salon();
+        $salon = $salon->findById($request->getQuery('id'));
+        // 404
+        return (new JsonResponse)->make(
+            config('response.salons.detail'),
+            $salon,
+            StatusCode::OK,
+            false
+        );
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        var_dump($request->getAllPrams());
+        exit;
         echo "create action";
     }
 
