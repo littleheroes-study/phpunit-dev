@@ -7,6 +7,7 @@ use App\Commons\JsonResponse;
 use App\Core\Request;
 use App\Core\Handler;
 use App\Core\Response;
+use App\Commons\ValidationRegex;
 use App\Enums\StatusCode;
 
 class SalonsController
@@ -45,9 +46,23 @@ class SalonsController
 
     public function create(Request $request)
     {
-        var_dump($request->getAllPrams());
-        exit;
-        echo "create action";
+        $validator = $this->createRequest($request->getAllPrams());
+        if (!empty($validator)) {
+            Handler::exceptionFor422($validator);
+            exit;
+        }
+        $salon = new Salon();
+        $isSuccess = $salon->create($request->getAllPrams());
+        if (!$isSuccess) {
+            Handler::exceptionFor409();
+            exit;
+        }
+        return (new JsonResponse)->make(
+            ['id'],
+            ['id' => $isSuccess],
+            StatusCode::CREATED,
+            false
+        );
     }
 
     public function update()
@@ -58,5 +73,40 @@ class SalonsController
     public function delete()
     {
         echo "delete action";
+    }
+
+    private function createRequest(array $requestParam): array
+    {
+        $msg = NULL;
+        $msgArray = [];
+        $validation = new ValidationRegex();
+        if ($msg = $validation->nameCheck($requestParam['name'])) {
+            $msgArray['name'] = $msg;
+        }
+        if ($msg = $validation->descriptionCheck($requestParam['description'])) {
+            $msgArray['description'] = $msg;
+        }
+        if ($msg = $validation->zipcodeCheck($requestParam['zipcode'])) {
+            $msgArray['zipcode'] = $msg;
+        }
+        if ($msg = $validation->descriptionCheck($requestParam['address'])) {
+            $msgArray['address'] = $msg;
+        }
+        if ($msg = $validation->phoneNumberCheck($requestParam['phone_number'])) {
+            $msgArray['phone_number'] = $msg;
+        }
+        if ($msg = $validation->timeCheck($requestParam['start_time'])) {
+            $msgArray['start_time'] = $msg;
+        }
+        if ($msg = $validation->timeCheck($requestParam['closing_time'])) {
+            $msgArray['closing_time'] = $msg;
+        }
+        if ($msg = $validation->regularHolidayCheck($requestParam['holiday'])) {
+            $msgArray['holiday'] = $msg;
+        }
+        if ($msg = $validation->paymentMethodCheck($requestParam['payment_methods'])) {
+            $msgArray['payment_methods'] = $msg;
+        }
+        return $msgArray;
     }
 }

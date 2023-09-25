@@ -173,34 +173,79 @@ class ValidationRegex
     /**
 	 * 必須項目のバリデーション
 	 */
-	function requiredCheck(?string $value): ?bool
+	private function requiredCheck(?string $value): bool|string 
     {
-        if (!isset($value)) {
-            echo '必須入力して下さい。';
-          }
-		return 'E1007';
+        if (!isset($value) || empty($value)) {
+            return '必須入力して下さい。';
+        }
+		return false;
 	}
 
     /**
 	 * 最大長255文字のバリデーション
 	 */
-	function maximumLengthCharacters255Check(string $value): ?bool
+	private function maximumLengthCharacters255Check(string $value): bool|string
     {
         if (mb_strlen($value) > 255) {
-            echo '255文字以内で入力して下さい。';
+            return '255文字以内で入力して下さい。';
           }
-		return 'E1007';
+		return false;
 	}
 
     /**
 	 * 最大長65535文字のバリデーション
 	 */
-	function textCheck(string $value): ?bool
+	public function textCheck(string $value): bool|string
     {
-        if (mb_strlen($value) > 65535) {
-            echo '65535文字以内で入力して下さい。';
+        if ((mb_strlen($value) > 65535)) {
+            return '65535文字以内で入力して下さい。';
           }
-		return 'E1007';
+		return false;
+	}
+
+    /**
+     * 項目：サロン名
+	 * 名前のバリデーション
+	 */
+	public function nameCheck(string $value): bool|string
+    {
+        if (
+            $this->requiredCheck($value) ||
+            $this->maximumLengthCharacters255Check($value)
+        ) {
+            return '名前は255文字以内で入力して下さい。';
+        }
+        return false;
+	}
+
+    /**
+     * 項目：サロン詳細、住所
+	 * 詳細のバリデーション
+	 */
+	public function descriptionCheck(string $value): bool|string
+    {
+        if (
+            $this->requiredCheck($value) ||
+            $this->textCheck($value)
+        ) {
+            return '65535文字以内で入力して下さい。';
+        }
+        return false;
+	}
+
+    /**
+     * 項目：郵便番号
+	 * 詳細のバリデーション
+	 */
+	public function zipcodeCheck(string $value): bool|string
+    {
+        if (
+            $this->requiredCheck($value) ||
+            $this->lengthCharacters7Check($value)
+        ) {
+            return '郵便番号は半角数字7文字以内で入力して下さい。';
+        }
+        return false;
 	}
 
     /**
@@ -217,23 +262,23 @@ class ValidationRegex
     /**
 	 * 最大長11-13文字のバリデーション
 	 */
-	function maximumLengthCharacters10to13Check(string $value): ?bool
+	public function phoneNumberCheck(string $value): bool|string
     {
-        if (mb_strlen($value) < 10 && mb_strlen($value) > 13) {
-            echo '10文字以上、13文字以下で入力して下さい。';
+        if (!preg_match('/^([0-9]{10,13})$/', $value)) {
+            return '電話番号は10文字以上、13文字以下で入力して下さい。';
           }
-		return 'E1007';
+		return false;
 	}
 
     /**
-	 * 最大長11-13文字のバリデーション
+	 * 最大長7文字のバリデーション
 	 */
-	function lengthCharacters7Check(string $value): ?bool
+	private function lengthCharacters7Check(string $value): ?bool
     {
         if (mb_strlen($value) !== 7) {
-            echo '7桁で入力して下さい。';
+            return true;
           }
-		return 'E1007';
+		return false;
 	}
 
     /**
@@ -291,7 +336,7 @@ class ValidationRegex
         if (!preg_match('/^[0-9]+$/', $value)) {
 			return '数字で入力して下さい。';
 		}
-		return 'E1007';
+		return false;
 	}
 
     /**
@@ -300,15 +345,14 @@ class ValidationRegex
 	function passwordFormatCheck($value) {
 		if (!preg_match('/^([a-zA-Z0-9]{8,16})$/', $value)){
 			return 'パスワードは8文字以上16文字以内で入力して下さい。';
-		}
-		
+		}	
 		return 'E1003';
 	}
 
     /**
 	 * 時間のバリデーション
 	 */
-	function timeCheck(int $value): ?bool
+	function timeNumberCheck(int $value): ?bool
     {
         if (!($value > 24)) {
             echo '24時間以内で入力して下さい。';
@@ -319,12 +363,27 @@ class ValidationRegex
     /**
 	 * 時間形式のバリデーション
 	 */
-	function timeFormatCheck(string $value): ?bool
+	private function timeFormatCheck(string $value): ?bool
     {
         if (!preg_match('/\d{2}\:\d{2}\:\d{2}/', $value)){
-            echo '時間形式で入力して下さい。';
+            return '時間を入力して下さい。';
         }
-		return 'E1007';
+		return false;
+	}
+
+    /**
+     * 項目：時間
+	 * 詳細のバリデーション
+	 */
+	public function timeCheck(string $value): bool|string
+    {
+        if (
+            $this->requiredCheck($value) ||
+            $this->timeFormatCheck($value)
+        ) {
+            return '時間を入力して下さい。';
+        }
+        return false;
 	}
 
     /**
@@ -366,25 +425,28 @@ class ValidationRegex
     /**
 	 * 定休日のバリデーション
 	 */
-	function regularHolidayCheck(int $value): ?bool
+	public function regularHolidayCheck(array $values): bool|string
     {
-        if (!($value <= 6)) {
-            echo '0から6で入力して下さい。';
+        foreach($values as $value) {
+            if (!preg_match('/^([0-6])$/', $value)){
+                return '定休日は0から6で入力して下さい。';
+            }
         }
-		return 'E1007';
+		return false;
 	}
 
     /**
 	 * 支払い方法のバリデーション
 	 */
-	function paymentMethodCheck($value): ?bool
+	public function paymentMethodCheck(array $values): bool|string
     {
-        $oClass = new \ReflectionClass(new PaymentType);
-        var_dump($oClass->getConstants());
-        exit;
-        if (!is_bool($value)) {
-            echo '指定の支払い方法を選択してください。';
+        $paymentTypeClass = new \ReflectionClass('App\Enums\PaymentType');
+        $enums = $paymentTypeClass->getConstants();
+        foreach($values as $value) {
+            if (!in_array($value, $enums)) {
+                return '指定の支払い方法を選択してください。';
+            }
         }
-		return 'E1007';
+		return false;
 	}
 }

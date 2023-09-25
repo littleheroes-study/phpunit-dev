@@ -52,15 +52,16 @@ class Handler
         ]);
     }
 
-    public static function exceptionFor422()
+    public static function exceptionFor422(array $validator)
     {
         echo json_encode([
             'message' => 'Unprocessable Content',
-            'error_code' => StatusCode::UNPROCESSABLE_ENTITY
+            'validation_message' => $validator,
+            'error_code' => StatusCode::PRECONDITION_REQUIRED
         ]);
     }
 
-    public static function exceptionFor428()
+    public static function exceptionFor428($validator)
     {
         echo json_encode([
             'message' => 'Precondition Required',
