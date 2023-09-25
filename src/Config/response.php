@@ -26,6 +26,7 @@ return [
         'detail' => [
             'id',
             'salon_id',
+            'salon_name',
             'name',
             'name_kana',
             'gender',

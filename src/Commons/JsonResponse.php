@@ -3,8 +3,6 @@ namespace App\Commons;
 
 use App\Core\Response;
 
-use function App\Helpers\config;
-
 class JsonResponse extends Response
 {
 	private array $responseKeys;

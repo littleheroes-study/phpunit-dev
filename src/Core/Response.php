@@ -20,10 +20,11 @@ class Response
             $this->singleConvert($keys, $resource);
         }
     }
+
     /**
      * 一覧系の加工処理
      */
-    public function groupConvert(array $keys, array $array): void
+    private function groupConvert(array $keys, array $array): void
     {
         $templateArray = [];
         foreach($keys as $key) {
@@ -40,7 +41,7 @@ class Response
     /**
      * 詳細系の加工処理
      */
-    public function singleConvert(array $keys, array $resource): void
+    private function singleConvert(array $keys, array $resource): void
     {
         foreach($keys as $key) {
             $this->jsonConvertArray[$key] = isset($resource[$key]) ? $resource[$key] : NULL;

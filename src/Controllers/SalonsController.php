@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Salon;
 use App\Commons\JsonResponse;
 use App\Core\Request;
+use App\Core\Handler;
 use App\Core\Response;
 use App\Enums\StatusCode;
 
@@ -28,10 +29,12 @@ class SalonsController
 
     public function detail(Request $request)
     {
-        // リクエスト
         $salon = new Salon();
         $salon = $salon->findById($request->getQuery('id'));
-        // 404
+        if (empty($salon)) {
+            Handler::exceptionFor404();
+            exit;
+        }
         return (new JsonResponse)->make(
             config('response.salons.detail'),
             $salon,

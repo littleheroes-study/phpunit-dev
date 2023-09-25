@@ -118,7 +118,7 @@ class Request
      */
     public function getQuery($key)
     {
-        return $this->queries[$key];
+        return $this->queries[$key] ?? NULL;
     }
 
     /**
