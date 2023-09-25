@@ -20,9 +20,24 @@ class Stylist extends BaseModel
         return $stylists;
     }
 
-    public function findById(int|string $id): array
+    public function findById(int $id): array|bool
     {
-        $sql = "SELECT * FROM stylists WHERE id = :id AND deleted_at IS NULL";
+        $sql = 
+            "SELECT 
+                stylists.id,
+                stylists.salon_id,
+                salons.name as salon_name,
+                stylists.name,
+                stylists.name_kana,
+                stylists.gender,
+                stylists.appoint_fee,
+                stylists.stylist_history,
+                stylists.skill
+            FROM stylists
+            INNER JOIN salons
+            ON salons.id=stylists.salon_id
+            WHERE stylists.id=:id
+            AND stylists.deleted_at IS NULL";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

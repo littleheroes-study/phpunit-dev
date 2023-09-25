@@ -4,6 +4,7 @@ use App\Core\Request;
 use App\Core\Config;
 use App\Core\App;
 
+ini_set("display_errors", 1);
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader

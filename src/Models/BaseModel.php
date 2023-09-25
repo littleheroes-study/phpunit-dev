@@ -4,6 +4,8 @@ namespace App\Models;
 
 use \PDO;
 
+use function App\Controllers\config;
+
 abstract class BaseModel
 {
     /**
@@ -22,16 +24,16 @@ abstract class BaseModel
 
     private function dbConnect(): PDO
     {
-        $host="db"; // 開発環境のドメイン
-        $dbname="mysql_php"; // 開発環境のデータベース名
+        $host = config('database.connection.host'); // 開発環境のドメイン
+        $dbname = config('database.connection.dbname'); // 開発環境のデータベース名
+        $user = 
+        $pass = config('database.connection.password'); // 開発環境のデータベースに指定したパスワード
         $dns = "mysql:host=" . $host . ";dbname=" . $dbname . ";";
-        $user="phper"; // 開発環境のデータベースのユーザー名
-        $pass="drowssap"; // 開発環境のデータベースに指定したパスワード
         try
         {
             $pdo = new PDO(
                 $dns, 
-                $user, 
+                config('database.connection.user'), // 開発環境のデータベースのユーザー名 
                 $pass, 
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
