@@ -8,10 +8,10 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "./"
+            "App\\": "app/"
         },
         "files": [
-            "./Helpers/helper.php"
+            "app/Helpers/helper.php"
         ]
     }
 }

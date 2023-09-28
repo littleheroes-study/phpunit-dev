@@ -3,7 +3,8 @@ return [
     'salons' => [
         'index' => [
             'id',
-            'name'
+            'name',
+            'description',
         ],
         'detail' => [
             'id',
@@ -21,7 +22,8 @@ return [
     'stylists' => [
         'index' => [
             'id',
-            'name'
+            'name',
+            'salon_name',
         ],
         'detail' => [
             'id',

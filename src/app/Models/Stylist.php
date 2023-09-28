@@ -44,4 +44,22 @@ class Stylist extends BaseModel
         $stylist = $stmt->fetch(PDO::FETCH_ASSOC);
         return $stylist;
     }
+
+    public function create(array $stylist): false|int
+    {
+        $sql = "INSERT INTO stylists (salon_id,name,name_kana,gender,appoint_fee,stylist_history,skill) VALUES (:salon_id, :name, :name_kana, :gender, :appoint_fee, :stylist_history, :skill)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':salon_id', $stylist['salon_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':name', $stylist['name'], PDO::PARAM_STR);
+        $stmt->bindValue(':name_kana', $stylist['name_kana'], PDO::PARAM_STR);
+        $stmt->bindValue(':gender', $stylist['gender'], PDO::PARAM_STR);
+        $stmt->bindValue(':appoint_fee', $stylist['appoint_fee'], PDO::PARAM_INT);
+        $stmt->bindValue(':stylist_history', $stylist['stylist_history'], PDO::PARAM_INT);
+        $stmt->bindValue(':skill', $stylist['skill'], PDO::PARAM_STR);
+        $result = $stmt->execute();
+        if ($result) {
+            return $this->pdo->lastInsertId();
+        }
+        return $result;
+    }
 }

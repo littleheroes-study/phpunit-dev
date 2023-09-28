@@ -2,15 +2,20 @@
 
 namespace App\Controllers;
 
-class ReservationsController
+use App\Core\Request;
+use App\Models\Customer;
+
+class CustomersController
 {
     /*
     |--------------------------------------------------------------------------
-    | 予約管理
+    | 会員管理
     |--------------------------------------------------------------------------
     */
     public function index()
     {
+        $customer = new Customer();
+        $customer->index();
         echo "index action";
     }
 
@@ -19,17 +24,17 @@ class ReservationsController
         echo "detail action";
     }
 
-    public function create()
+    public function create(Request $request)
     {
         echo "create action";
     }
 
-    public function update()
+    public function update(Request $request)
     {
         echo "update action";
     }
 
-    public function delete()
+    public function delete(Request $request)
     {
         echo "delete action";
     }

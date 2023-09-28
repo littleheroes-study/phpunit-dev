@@ -5,7 +5,6 @@ class Response
 {
     /**
      * 返却する配列
-     * 
      * @var array
      */
     private $jsonConvertArray = [];

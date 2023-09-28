@@ -65,12 +65,12 @@ class SalonsController
         );
     }
 
-    public function update()
+    public function update(Request $request)
     {
         echo "update action";
     }
 
-    public function delete()
+    public function delete(Request $request)
     {
         echo "delete action";
     }

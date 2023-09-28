@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Core\Request;
+
 class MenusController
 {
     /*
@@ -19,17 +21,17 @@ class MenusController
         echo "detail action";
     }
 
-    public function create()
+    public function create(Request $request)
     {
         echo "create action";
     }
 
-    public function update()
+    public function update(Request $request)
     {
         echo "update action";
     }
 
-    public function delete()
+    public function delete(Request $request)
     {
         echo "delete action";
     }

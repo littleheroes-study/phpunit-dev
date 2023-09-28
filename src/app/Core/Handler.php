@@ -57,11 +57,11 @@ class Handler
         echo json_encode([
             'message' => 'Unprocessable Content',
             'validation_message' => $validator,
-            'error_code' => StatusCode::PRECONDITION_REQUIRED
+            'error_code' => StatusCode::UNPROCESSABLE_ENTITY
         ]);
     }
 
-    public static function exceptionFor428($validator)
+    public static function exceptionFor428()
     {
         echo json_encode([
             'message' => 'Precondition Required',

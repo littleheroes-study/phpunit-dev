@@ -18,8 +18,6 @@ class App
 
     /**
      * action名
-     * 
-     * @var string
      */
     protected $action;
 

@@ -6,6 +6,7 @@ use App\Enums\Gender;
 use App\Enums\PaymentType;
 use App\Enums\LimitedCondition;
 use App\Enums\CustomerStatusType;
+use phpDocumentor\Reflection\Types\Integer;
 
 class ValidationRegex
 {
@@ -293,17 +294,6 @@ class ValidationRegex
 	}
 
     /**
-	 * 性別のバリデーション
-	 */
-	function genderCheck(string $value): ?bool
-    {
-        if ($value !== Gender::MALE || $value !== Gender::FEMALE) {
-            echo '性別は正しく入力して下さい。';
-          }
-		return 'E1007';
-	}
-
-    /**
 	 * 会員ステータスのバリデーション
 	 */
 	function customerStatusCheck(string $value): ?bool
@@ -387,17 +377,6 @@ class ValidationRegex
 	}
 
     /**
-	 * 99999999以下のバリデーション
-	 */
-	function amountOfMoneyCheck(string $value): ?bool
-    {
-        if (!((int) $value <= 99999999)) {
-            echo '99999999万円以下で入力して下さい。';
-        }
-		return 'E1007';
-	}
-
-    /**
 	 * boolean型のバリデーション
 	 */
 	function booleanCheck($value): ?bool
@@ -440,13 +419,41 @@ class ValidationRegex
 	 */
 	public function paymentMethodCheck(array $values): bool|string
     {
-        $paymentTypeClass = new \ReflectionClass('App\Enums\PaymentType');
-        $enums = $paymentTypeClass->getConstants();
+        $PaymentTypeClass = new \ReflectionClass('App\Enums\PaymentType');
+        $enums = $PaymentTypeClass->getConstants();
         foreach($values as $value) {
             if (!in_array($value, $enums)) {
                 return '指定の支払い方法を選択してください。';
             }
         }
+		return false;
+	}
+
+    /**
+	 * 性別のバリデーション
+	 */
+	public function genderCheck(string $value): bool|string
+    {
+        $GenderClass = new \ReflectionClass('App\Enums\Gender');
+        $enums = $GenderClass->getConstants();
+        if (!in_array($value, $enums)) {
+            return '指定の性別を選択してください。';
+        }
+		return false;
+	}
+
+    /**
+	 * 数値のバリデーション
+	 */
+	public function numberCheck($value): bool|string
+    {
+        if (
+			$this->requiredCheck($value) ||
+        	!is_int($value) ||
+			!((int) $value <= 4294967295)
+		) {
+			return '適正な数値を入力して下さい。';
+		}
 		return false;
 	}
 }
