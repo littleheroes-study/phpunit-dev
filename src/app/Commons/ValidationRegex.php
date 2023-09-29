@@ -4,7 +4,7 @@ namespace App\Commons;
 use App\Core\Request;
 use App\Enums\Gender;
 use App\Enums\PaymentType;
-use App\Enums\LimitedCondition;
+use App\Enums\ConditionType;
 use App\Enums\CustomerStatusType;
 use phpDocumentor\Reflection\Types\Integer;
 
@@ -353,20 +353,6 @@ class ValidationRegex
 	}
 
     /**
-	 * 限定条件のバリデーション
-	 */
-	function limitedConditionsCheck($value): ?bool
-    {
-        $oClass = new \ReflectionClass(new LimitedCondition);
-        var_dump($oClass->getConstants());
-        exit;
-        if (!is_bool($value)) {
-            echo 'trueもしくはfalseで入力して下さい。';
-        }
-		return 'E1007';
-	}
-
-    /**
 	 * 定休日のバリデーション
 	 */
 	public function regularHolidayCheck(array $values): false|string
@@ -484,6 +470,30 @@ class ValidationRegex
 		if (!preg_match('/^([a-zA-Z0-9]{8,16})$/', $value)){
 			return 'パスワードは8文字以上16文字以内で入力して下さい。';
 		}	
+		return false;
+	}
+
+	/**
+	 * tinyint(1)型のバリデーション
+	 */
+	public function tinyintBoolCheck($value): false|string
+    {
+        if ($value > 1) {
+            return '0か1を正しく入力して下さい。';
+        }
+        return false;
+	}
+
+    /**
+	 * 限定条件のバリデーション
+	 */
+	public function conditionTypeCheck($value): ?bool
+    {
+		$ConditionTypeClass = new \ReflectionClass('App\Enums\ConditionType');
+        $enums = $ConditionTypeClass->getConstants();
+		if (!in_array($value, $enums)) {
+            return '限定条件は正しく入力して下さい。';
+        }
 		return false;
 	}
 }

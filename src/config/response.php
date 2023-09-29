@@ -54,5 +54,23 @@ return [
             'stylist_history',
             'skill',
         ],
+    ],
+    'menus' => [
+        'index' => [
+            'id',
+            'name',
+            'salon_name',
+        ],
+        'detail' => [
+            'id',
+            'salon_id',
+            'name',
+            'description',
+            'operation_time',
+            'deadline time',
+            'amount',
+            'is_coupon',
+            'conditions',
+        ],
     ]
 ];

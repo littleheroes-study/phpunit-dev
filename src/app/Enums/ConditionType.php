@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-final class LimitedCondition
+final class ConditionType
 {
     const ANYONE = 'anyone'; // 誰でも
     const MALE = 'male'; // 男性のみ

@@ -51,13 +51,14 @@ class StylistsController extends BaseController
             Handler::exceptionFor422($validator);
             exit;
         }
-        $salonId = $request->getParam('salon_id'); // TODO: 認証機能追加後修正する
-        $stylist = new Stylist();
-        $result = $stylist->findById($salonId);
-        if (empty($result)) {
+        // サロンの存在確認
+        $salon = new Salon();
+        $salonEnsure = $salon->findById($request->getParam('salon_id'));
+        if (empty($salonEnsure)) {
             Handler::exceptionFor428();
             exit;
         }
+        $stylist = new Stylist();
         $isSuccess = $stylist->create($request->getAllPrams());
         if (!$isSuccess) {
             Handler::exceptionFor409();

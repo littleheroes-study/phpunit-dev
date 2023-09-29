@@ -29,7 +29,7 @@ class Salon extends BaseModel
         return $salons;
     }
 
-    public function findById(int|string $id): array|false
+    public function findById(int $id): array|false
     {
         $sql = "
             SELECT
