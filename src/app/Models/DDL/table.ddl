@@ -50,7 +50,7 @@ CREATE TABLE `menus` (
   `name` varchar(255) NOT NULL COMMENT 'メニュー名',
   `description` text NOT NULL COMMENT 'メニュー詳細',
   `operation_time` int unsigned NOT NULL COMMENT '施術時間',
-  `deadline time` time NOT NULL COMMENT '予約期限時間【時】',
+  `deadline_time` time NOT NULL COMMENT '予約期限時間【時】',
   `amount` int unsigned NOT NULL DEFAULT '0' COMMENT '金額【税込】',
   `is_coupon` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'クーポン区分',
   `conditions` enum('anyone','female','male') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'anyone' COMMENT '限定条件',
