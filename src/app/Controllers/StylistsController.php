@@ -115,7 +115,7 @@ class StylistsController extends BaseController
         }
         // スタイリストの存在確認
         $stylist = new Stylist();
-        $stylistEnsure = $stylist->findById($request->getQuery('id'));
+        $stylistEnsure = $stylist->findById($request->getParam('stylist_id'));
         if (empty($stylistEnsure)) {
             Handler::exceptionFor428();
             exit;
