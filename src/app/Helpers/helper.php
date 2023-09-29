@@ -11,3 +11,9 @@ function config(string $value): array|string
 {
     return Config::get($value);
 }
+
+function passwordHash(string $password): string
+{
+    $hashPasword = password_hash($password, PASSWORD_DEFAULT);
+    return $hashPasword;
+}

@@ -9,7 +9,8 @@ use App\Models\Stylist;
 use App\Enums\StatusCode;
 use App\Commons\JsonResponse;
 use App\Commons\ValidationRegex;
-class StylistsController
+use App\Controllers\BaseController;
+class StylistsController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------
@@ -85,7 +86,7 @@ class StylistsController
         $msg = NULL;
         $msgArray = [];
         $validation = new ValidationRegex();
-        if ($msg = $validation->nameCheck($requestParam['salon_id'])) {
+        if ($msg = $validation->numberCheck($requestParam['salon_id'])) {
             $msgArray['salon_id'] = $msg;
         }
         if ($msg = $validation->nameCheck($requestParam['name'])) {

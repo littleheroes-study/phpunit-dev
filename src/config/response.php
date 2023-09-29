@@ -1,5 +1,23 @@
 <?php
 return [
+    'customers' => [
+        'index' => [
+            'id',
+            'name',
+            'description',
+        ],
+        'detail' => [
+            'name',
+            'name_kana',
+            'gender',
+            'uuid',
+            'status',
+            'email',
+            'phone_number',
+            'zipcode',
+            'address',
+        ],
+    ],
     'salons' => [
         'index' => [
             'id',
@@ -17,7 +35,7 @@ return [
             'closing_time',
             'holiday',
             'payment_methods',
-        ]
+        ],
     ],
     'stylists' => [
         'index' => [
@@ -35,6 +53,6 @@ return [
             'appoint_fee',
             'stylist_history',
             'skill',
-        ]
+        ],
     ]
 ];
