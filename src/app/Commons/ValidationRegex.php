@@ -294,31 +294,6 @@ class ValidationRegex
 	}
 
     /**
-	 * 会員ステータスのバリデーション
-	 */
-	function customerStatusCheck(string $value): ?bool
-    {
-        if (
-            $value !== CustomerStatusType::MEMBER ||
-            $value !== CustomerStatusType::TEMPORARY
-        ) {
-            echo '会員ステータスは正しく入力して下さい。';
-          }
-		return 'E1007';
-	}
-
-    /**
-	 * email形式のバリデーション
-	 */
-	function emailFormatCheck(string $value): ?bool
-    {
-        if (!preg_match('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$/', $value)) {
-			return 'emailは正しいフォーマットで入力して下さい。';
-		}
-		return 'E1007';
-	}
-
-    /**
 	 * 番号関連形式のバリデーション
 	 */
 	function numberFormatCheck(string $value): ?bool
@@ -327,16 +302,6 @@ class ValidationRegex
 			return '数字で入力して下さい。';
 		}
 		return false;
-	}
-
-    /**
-	 * パスワード形式のバリデーション
-	 */
-	function passwordFormatCheck($value) {
-		if (!preg_match('/^([a-zA-Z0-9]{8,16})$/', $value)){
-			return 'パスワードは8文字以上16文字以内で入力して下さい。';
-		}	
-		return 'E1003';
 	}
 
     /**
@@ -353,7 +318,7 @@ class ValidationRegex
     /**
 	 * 時間形式のバリデーション
 	 */
-	private function timeFormatCheck(string $value): ?bool
+	private function timeFormatCheck(string $value): false|string
     {
         if (!preg_match('/\d{2}\:\d{2}\:\d{2}/', $value)){
             return '時間を入力して下さい。';
@@ -365,7 +330,7 @@ class ValidationRegex
      * 項目：時間
 	 * 詳細のバリデーション
 	 */
-	public function timeCheck(string $value): bool|string
+	public function timeCheck(string $value): false|string
     {
         if (
             $this->requiredCheck($value) ||
@@ -404,7 +369,7 @@ class ValidationRegex
     /**
 	 * 定休日のバリデーション
 	 */
-	public function regularHolidayCheck(array $values): bool|string
+	public function regularHolidayCheck(array $values): false|string
     {
         foreach($values as $value) {
             if (!preg_match('/^([0-6])$/', $value)){
@@ -417,7 +382,7 @@ class ValidationRegex
     /**
 	 * 支払い方法のバリデーション
 	 */
-	public function paymentMethodCheck(array $values): bool|string
+	public function paymentMethodCheck(array $values): false|string
     {
         $PaymentTypeClass = new \ReflectionClass('App\Enums\PaymentType');
         $enums = $PaymentTypeClass->getConstants();
@@ -432,7 +397,7 @@ class ValidationRegex
     /**
 	 * 性別のバリデーション
 	 */
-	public function genderCheck(string $value): bool|string
+	public function genderCheck(string $value): false|string
     {
         $GenderClass = new \ReflectionClass('App\Enums\Gender');
         $enums = $GenderClass->getConstants();
@@ -445,7 +410,7 @@ class ValidationRegex
     /**
 	 * 数値のバリデーション
 	 */
-	public function numberCheck($value): bool|string
+	public function numberCheck($value): false|string
     {
         if (
 			$this->requiredCheck($value) ||
@@ -454,6 +419,71 @@ class ValidationRegex
 		) {
 			return '適正な数値を入力して下さい。';
 		}
+		return false;
+	}
+
+	/**
+	 * 会員ステータスのバリデーション
+	 */
+	public function customerStatusCheck(string $value): false|string
+    {
+		$CustomerStatusClass = new \ReflectionClass('App\Enums\CustomerStatus');
+        $enums = $CustomerStatusClass->getConstants();
+        if (!in_array($value, $enums)) {
+            return '会員ステータスは正しく入力して下さい。';
+        }
+		return false;
+	}
+
+	/**
+	 * email形式のバリデーション
+	 */
+	private function emailFormatCheck(string $value): bool
+    {
+        if (!preg_match('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$/', $value)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * emailのバリデーション
+	 */
+	public function emailCheck(string $value): false|string
+	{
+		if (
+            $this->requiredCheck($value) ||
+            $this->maximumLengthCharacters255Check($value) ||
+            $this->emailFormatCheck($value)
+        ) {
+            return 'emailを正しく入力して下さい。';
+        }
+        return false;
+	}
+
+	/**
+	 * passwordのバリデーション
+	 */
+	public function passwordCheck(string $value): false|string
+	{
+		if (
+            $this->requiredCheck($value) ||
+            $this->maximumLengthCharacters255Check($value) ||
+            $this->passwordFormatCheck($value)
+        ) {
+            return 'passwordを正しく入力して下さい。';
+        }
+        return false;
+	}
+
+	/**
+	 * パスワード形式のバリデーション
+	 */
+	private function passwordFormatCheck($value) 
+	{
+		if (!preg_match('/^([a-zA-Z0-9]{8,16})$/', $value)){
+			return 'パスワードは8文字以上16文字以内で入力して下さい。';
+		}	
 		return false;
 	}
 }

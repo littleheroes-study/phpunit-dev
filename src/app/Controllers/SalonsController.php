@@ -3,14 +3,14 @@
 namespace App\Controllers;
 
 use App\Models\Salon;
-use App\Commons\JsonResponse;
 use App\Core\Request;
 use App\Core\Handler;
-use App\Core\Response;
-use App\Commons\ValidationRegex;
 use App\Enums\StatusCode;
+use App\Commons\JsonResponse;
+use App\Commons\ValidationRegex;
+use App\Controllers\BaseController;
 
-class SalonsController
+class SalonsController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------
@@ -67,12 +67,46 @@ class SalonsController
 
     public function update(Request $request)
     {
-        echo "update action";
+        $validator = $this->updateRequest($request->getAllPrams());
+        if (!empty($validator)) {
+            Handler::exceptionFor422($validator);
+            exit;
+        }
+        $salon = new Salon();
+        // TODO: 認証機能追加後認可処理を追加する
+        $isSuccess = $salon->update($request->getAllPrams());
+        if (!$isSuccess) {
+            Handler::exceptionFor409();
+            exit;
+        }
+        return (new JsonResponse)->make(
+            [],
+            [],
+            StatusCode::NO_CONTENT,
+            false
+        );
     }
 
     public function delete(Request $request)
     {
-        echo "delete action";
+        $validator = $this->deleteRequest($request->getParam('salon_id'));
+        if (!empty($validator)) {
+            Handler::exceptionFor422($validator);
+            exit;
+        }
+        $salon = new Salon();
+        // TODO: 認証機能追加後認可処理を追加する
+        $isSuccess = $salon->delete($request->getParam('salon_id'));
+        if (!$isSuccess) {
+            Handler::exceptionFor409();
+            exit;
+        }
+        return (new JsonResponse)->make(
+            [],
+            [],
+            StatusCode::NO_CONTENT,
+            false
+        );
     }
 
     private function createRequest(array $requestParam): array
@@ -106,6 +140,55 @@ class SalonsController
         }
         if ($msg = $validation->paymentMethodCheck($requestParam['payment_methods'])) {
             $msgArray['payment_methods'] = $msg;
+        }
+        return $msgArray;
+    }
+
+    private function updateRequest(array $requestParam): array
+    {
+        $msg = NULL;
+        $msgArray = [];
+        $validation = new ValidationRegex();
+        if ($msg = $validation->numberCheck($requestParam['salon_id'])) {
+            $msgArray['salon_id'] = $msg;
+        }
+        if ($msg = $validation->nameCheck($requestParam['name'])) {
+            $msgArray['name'] = $msg;
+        }
+        if ($msg = $validation->descriptionCheck($requestParam['description'])) {
+            $msgArray['description'] = $msg;
+        }
+        if ($msg = $validation->zipcodeCheck($requestParam['zipcode'])) {
+            $msgArray['zipcode'] = $msg;
+        }
+        if ($msg = $validation->descriptionCheck($requestParam['address'])) {
+            $msgArray['address'] = $msg;
+        }
+        if ($msg = $validation->phoneNumberCheck($requestParam['phone_number'])) {
+            $msgArray['phone_number'] = $msg;
+        }
+        if ($msg = $validation->timeCheck($requestParam['start_time'])) {
+            $msgArray['start_time'] = $msg;
+        }
+        if ($msg = $validation->timeCheck($requestParam['closing_time'])) {
+            $msgArray['closing_time'] = $msg;
+        }
+        if ($msg = $validation->regularHolidayCheck($requestParam['holiday'])) {
+            $msgArray['holiday'] = $msg;
+        }
+        if ($msg = $validation->paymentMethodCheck($requestParam['payment_methods'])) {
+            $msgArray['payment_methods'] = $msg;
+        }
+        return $msgArray;
+    }
+
+    private function deleteRequest(mixed $salonId): array
+    {
+        $msg = NULL;
+        $msgArray = [];
+        $validation = new ValidationRegex();
+        if ($msg = $validation->numberCheck($salonId)) {
+            $msgArray['salon_id'] = $msg;
         }
         return $msgArray;
     }

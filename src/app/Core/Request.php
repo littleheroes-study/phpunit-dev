@@ -106,8 +106,7 @@ class Request
      */
     private function setPutOrDeleteParameters()
     {
-        $params = parse_str(file_get_contents('php://input'));
-        if(empty($params) && $_SERVER['CONTENT_TYPE'] === 'application/json')  {
+        if($_SERVER['CONTENT_TYPE'] === 'application/json')  {
             $params = json_decode(file_get_contents('php://input'), true);
         }
         $this->parameters = $params;
