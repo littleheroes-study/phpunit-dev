@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Handler;
 use App\Core\Request;
-use App\Core\Response;
+use App\Models\Salon;
 use App\Models\Stylist;
 use App\Enums\StatusCode;
 use App\Commons\JsonResponse;
@@ -73,12 +73,63 @@ class StylistsController extends BaseController
 
     public function update(Request $request)
     {
-        echo "update action";
+        $validator = $this->updateRequest($request->getAllPrams());
+        if (!empty($validator)) {
+            Handler::exceptionFor422($validator);
+            exit;
+        }
+        // サロンの存在確認
+        $salon = new Salon();
+        $salonEnsure = $salon->findById($request->getParam('salon_id'));
+        if (empty($salonEnsure)) {
+            Handler::exceptionFor428();
+            exit;
+        }
+        // スタイリストの存在確認
+        $stylist = new Stylist();
+        $stylistEnsure = $stylist->findById($request->getParam('stylist_id'));
+        if (empty($stylistEnsure)) {
+            Handler::exceptionFor428();
+            exit;
+        }
+        $isSuccess = $stylist->update($request->getAllPrams());
+        if (!$isSuccess) {
+            Handler::exceptionFor409();
+            exit;
+        }
+        return (new JsonResponse)->make(
+            [],
+            [],
+            StatusCode::NO_CONTENT,
+            false
+        );
     }
 
     public function delete(Request $request)
     {
-        echo "delete action";
+        $validator = $this->deleteRequest($request->getParam('stylist_id'));
+        if (!empty($validator)) {
+            Handler::exceptionFor422($validator);
+            exit;
+        }
+        // スタイリストの存在確認
+        $stylist = new Stylist();
+        $stylistEnsure = $stylist->findById($request->getQuery('id'));
+        if (empty($stylistEnsure)) {
+            Handler::exceptionFor428();
+            exit;
+        }
+        $isSuccess = $stylist->delete($request->getParam('stylist_id'));
+        if (!$isSuccess) {
+            Handler::exceptionFor409();
+            exit;
+        }
+        return (new JsonResponse)->make(
+            [],
+            [],
+            StatusCode::NO_CONTENT,
+            false
+        );
     }
 
     private function createRequest(array $requestParam): array
@@ -106,6 +157,49 @@ class StylistsController extends BaseController
         }
         if ($msg = $validation->textCheck($requestParam['skill'])) {
             $msgArray['skill'] = $msg;
+        }
+        return $msgArray;
+    }
+
+    private function updateRequest(array $requestParam): array
+    {
+        $msg = NULL;
+        $msgArray = [];
+        $validation = new ValidationRegex();
+        if ($msg = $validation->numberCheck($requestParam['stylist_id'])) {
+            $msgArray['stylist_id'] = $msg;
+        }
+        if ($msg = $validation->numberCheck($requestParam['salon_id'])) {
+            $msgArray['salon_id'] = $msg;
+        }
+        if ($msg = $validation->nameCheck($requestParam['name'])) {
+            $msgArray['name'] = $msg;
+        }
+        if ($msg = $validation->nameCheck($requestParam['name_kana'])) {
+            $msgArray['name_kana'] = $msg;
+        }
+        if ($msg = $validation->genderCheck($requestParam['gender'])) {
+            $msgArray['gender'] = $msg;
+        }
+        if ($msg = $validation->numberCheck($requestParam['appoint_fee'])) {
+            $msgArray['appoint_fee'] = $msg;
+        }
+        if ($msg = $validation->numberCheck($requestParam['stylist_history'])) {
+            $msgArray['stylist_history'] = $msg;
+        }
+        if ($msg = $validation->textCheck($requestParam['skill'])) {
+            $msgArray['skill'] = $msg;
+        }
+        return $msgArray;
+    }
+
+    private function deleteRequest(mixed $stylistId): array
+    {
+        $msg = NULL;
+        $msgArray = [];
+        $validation = new ValidationRegex();
+        if ($msg = $validation->numberCheck($stylistId)) {
+            $msgArray['stylist_id'] = $msg;
         }
         return $msgArray;
     }
