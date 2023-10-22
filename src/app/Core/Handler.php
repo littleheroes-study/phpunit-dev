@@ -6,7 +6,7 @@ use App\Enums\StatusCode;
 class Handler
 {
     protected static $directory;
- 
+
     public static function set_config_directory($directory)
     {
         self::$directory = $directory;
@@ -18,6 +18,7 @@ class Handler
             'message' => 'Bad Request',
             'error_code' => StatusCode::BAD_REQUEST
         ]);
+        exit();
     }
  
     public static function exceptionFor401()
@@ -26,6 +27,7 @@ class Handler
             'message' => 'Unauthorized',
             'error_code' => StatusCode::UNAUTHORIZED
         ]);
+        exit();
     }
  
     public static function exceptionFor403()
@@ -34,6 +36,7 @@ class Handler
             'message' => 'Forbidden',
             'error_code' => StatusCode::FORBIDDEN
         ]);
+        exit();
     }
 
     public static function exceptionFor404()
@@ -42,6 +45,7 @@ class Handler
             'message' => 'Not Found',
             'error_code' => StatusCode::NOT_FOUND
         ]);
+        exit();
     }
 
     public static function exceptionFor409()
@@ -50,6 +54,7 @@ class Handler
             'message' => 'Conflict',
             'error_code' => StatusCode::CONFLICT
         ]);
+        exit();
     }
 
     public static function exceptionFor422(array $validator)
@@ -59,6 +64,7 @@ class Handler
             'validation_message' => $validator,
             'error_code' => StatusCode::UNPROCESSABLE_ENTITY
         ]);
+        exit();
     }
 
     public static function exceptionFor428()
@@ -67,5 +73,6 @@ class Handler
             'message' => 'Precondition Required',
             'error_code' => StatusCode::PRECONDITION_REQUIRED
         ]);
+        exit();
     }
 }

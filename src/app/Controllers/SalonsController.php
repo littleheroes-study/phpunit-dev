@@ -9,8 +9,9 @@ use App\Enums\StatusCode;
 use App\Commons\JsonResponse;
 use App\Commons\ValidationRegex;
 use App\Controllers\BaseController;
+use App\Controllers\ControllerInterface;
 
-class SalonsController extends BaseController
+class SalonsController extends BaseController implements ControllerInterface
 {
     /*
     |--------------------------------------------------------------------------
@@ -31,10 +32,9 @@ class SalonsController extends BaseController
     public function detail(Request $request)
     {
         $salon = new Salon();
-        $salon = $salon->findById($request->getQuery('id'));
+        $salon = $salon->findById($request->getPathParam('id'));
         if (empty($salon)) {
             Handler::exceptionFor404();
-            exit;
         }
         return (new JsonResponse)->make(
             config('response.salons.detail'),
@@ -49,13 +49,11 @@ class SalonsController extends BaseController
         $validator = $this->createRequest($request->getAllPrams());
         if (!empty($validator)) {
             Handler::exceptionFor422($validator);
-            exit;
         }
         $salon = new Salon();
         $isSuccess = $salon->create($request->getAllPrams());
         if (!$isSuccess) {
             Handler::exceptionFor409();
-            exit;
         }
         return (new JsonResponse)->make(
             ['id'],
@@ -70,14 +68,17 @@ class SalonsController extends BaseController
         $validator = $this->updateRequest($request->getAllPrams());
         if (!empty($validator)) {
             Handler::exceptionFor422($validator);
-            exit;
         }
         $salon = new Salon();
-        // TODO: 認証機能追加後認可処理を追加する
+        $result = $salon->findById($request->getPathParam('id'));
+        if (empty($result)) {
+            Handler::exceptionFor404();
+        }
+        $request->parameters['salon_id'] = $request->getPathParam('id');
+        $salon = new Salon();
         $isSuccess = $salon->update($request->getAllPrams());
         if (!$isSuccess) {
             Handler::exceptionFor409();
-            exit;
         }
         return (new JsonResponse)->make(
             [],
@@ -89,17 +90,15 @@ class SalonsController extends BaseController
 
     public function delete(Request $request)
     {
-        $validator = $this->deleteRequest($request->getParam('salon_id'));
-        if (!empty($validator)) {
-            Handler::exceptionFor422($validator);
-            exit;
-        }
         $salon = new Salon();
+        $result = $salon->findById($request->getPathParam('id'));
+        if (empty($result)) {
+            Handler::exceptionFor404();
+        }
         // TODO: 認証機能追加後認可処理を追加する
-        $isSuccess = $salon->delete($request->getParam('salon_id'));
+        $isSuccess = $salon->delete($request->getPathParam('id'));
         if (!$isSuccess) {
             Handler::exceptionFor409();
-            exit;
         }
         return (new JsonResponse)->make(
             [],
@@ -149,9 +148,6 @@ class SalonsController extends BaseController
         $msg = NULL;
         $msgArray = [];
         $validation = new ValidationRegex();
-        if ($msg = $validation->numberCheck($requestParam['salon_id'])) {
-            $msgArray['salon_id'] = $msg;
-        }
         if ($msg = $validation->nameCheck($requestParam['name'])) {
             $msgArray['name'] = $msg;
         }
@@ -178,17 +174,6 @@ class SalonsController extends BaseController
         }
         if ($msg = $validation->paymentMethodCheck($requestParam['payment_methods'])) {
             $msgArray['payment_methods'] = $msg;
-        }
-        return $msgArray;
-    }
-
-    private function deleteRequest(mixed $salonId): array
-    {
-        $msg = NULL;
-        $msgArray = [];
-        $validation = new ValidationRegex();
-        if ($msg = $validation->numberCheck($salonId)) {
-            $msgArray['salon_id'] = $msg;
         }
         return $msgArray;
     }

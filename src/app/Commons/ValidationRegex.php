@@ -327,10 +327,36 @@ class ValidationRegex
 	}
 
     /**
+	 * 時間形式のバリデーション
+	 */
+	private function timestampFormatCheck(string $value): false|string
+    {
+        if (!preg_match('/\d{4}\:\d{2}\:\d{2} \d{4}\:\d{2}\:\d{2}/', $value)){
+            return '時間を入力して下さい。';
+        }
+		return false;
+	}
+
+    /**
      * 項目：時間
 	 * 詳細のバリデーション
 	 */
 	public function timeCheck(string $value): false|string
+    {
+        if (
+            $this->requiredCheck($value) ||
+            $this->timeFormatCheck($value)
+        ) {
+            return '時間を入力して下さい。';
+        }
+        return false;
+	}
+
+    /**
+     * 項目：timestamp
+	 * 詳細のバリデーション
+	 */
+	public function timestampCheck(string $value): false|string
     {
         if (
             $this->requiredCheck($value) ||

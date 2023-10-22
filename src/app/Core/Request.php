@@ -21,6 +21,11 @@ class Request
     public $parameters;
 
     /**
+     * get/put/deleteの場合のparameters
+     */
+    public $pathParameter;
+
+    /**
      * コンストラクター
      */
     public function __construct()
@@ -87,6 +92,14 @@ class Request
     {
         $gets = $_GET;
         $this->queries = $gets;
+        $exploded = array_filter(explode('/', $_SERVER['REQUEST_URI']), function($a) {
+            return !is_string( $a ) || strlen( $a ) ;
+        });
+        $pathParam = (empty($exploded[2])) ? NULL : $exploded[2];
+        if (!is_null($pathParam)) {
+            $pathParam = (strpos($pathParam, '?')) ? strstr($pathParam, '?', true) : $pathParam;
+        }
+        $this->pathParameter['id'] = (int) $pathParam;
     }
 
     /**
@@ -109,7 +122,11 @@ class Request
         if($_SERVER['CONTENT_TYPE'] === 'application/json')  {
             $params = json_decode(file_get_contents('php://input'), true);
         }
+        $exploded = array_filter(explode('/', $_SERVER['REQUEST_URI']), function($a) {
+            return !is_string( $a ) || strlen( $a ) ;
+        });
         $this->parameters = $params;
+        $this->pathParameter['id'] = (int) $exploded[2];
     }
 
     /**
@@ -161,5 +178,13 @@ class Request
     public function getMethod()
     {
         return $this->requestMethod;
+    }
+
+    /**
+     * パスパラメータを取得
+     */
+    public function getPathParam($key)
+    {
+        return $this->pathParameter[$key];
     }
 }
