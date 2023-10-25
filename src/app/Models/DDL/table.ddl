@@ -34,7 +34,7 @@ CREATE TABLE `salons` (
   `start_time` time NOT NULL COMMENT '営業開始時間',
   `closing_time` time NOT NULL COMMENT '営業終了時間',
   `holiday` set('0','1','2','3','4','5','6') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '定休日',
-  `payment_methods` set('Cash','Visa','Mastercard','JCB','American Express','PayPay','LINE Pay','交通IC','iD','Edy','WAON','nanaco') NOT NULL COMMENT '支払い方法',
+  `payment_methods` set('Cash','Visa','Mastercard','JCB','American Express','PayPay','Suica','Edy') NOT NULL COMMENT '支払い方法',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '登録日時',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日時',
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '削除日時',
