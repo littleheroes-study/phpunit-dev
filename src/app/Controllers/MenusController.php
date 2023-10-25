@@ -32,10 +32,9 @@ class MenusController extends BaseController
     public function detail(Request $request)
     {
         $menu = new Menu();
-        $menu = $menu->findById($request->getQuery('id'));
+        $menu = $menu->findById($request->getPathParam('id'));
         if (empty($menu)) {
             Handler::exceptionFor404();
-            exit;
         }
         return (new JsonResponse)->make(
             config('response.menus.detail'),
@@ -50,20 +49,21 @@ class MenusController extends BaseController
         $validator = $this->createRequest($request->getAllPrams());
         if (!empty($validator)) {
             Handler::exceptionFor422($validator);
-            exit;
         }
         // サロンの存在確認
         $salon = new Salon();
         $salonEnsure = $salon->findById($request->getParam('salon_id'));
         if (empty($salonEnsure)) {
             Handler::exceptionFor428();
-            exit;
         }
+        // 予約期限時間が営業開始時間より後か？
+        $this->ensureDeadlineTimeAfterStartTime();
+        // 予約期限時間が営業終了時間より前か？
+        $this->ensureDeadlineTimeBeforeClosingTime();
         $menu = new Menu();
         $isSuccess = $menu->create($request->getAllPrams());
         if (!$isSuccess) {
             Handler::exceptionFor409();
-            exit;
         }
         return (new JsonResponse)->make(
             ['id'],
@@ -78,26 +78,26 @@ class MenusController extends BaseController
         $validator = $this->updateRequest($request->getAllPrams());
         if (!empty($validator)) {
             Handler::exceptionFor422($validator);
-            exit;
         }
         // サロンの存在確認
         $salon = new Salon();
         $salonEnsure = $salon->findById($request->getParam('salon_id'));
         if (empty($salonEnsure)) {
             Handler::exceptionFor428();
-            exit;
         }
         // スタイリストの存在確認
         $menu = new Menu();
         $menuEnsure = $menu->findById($request->getParam('menu_id'));
         if (empty($menuEnsure)) {
             Handler::exceptionFor428();
-            exit;
         }
+        // 予約期限時間が営業開始時間より後か？
+        $this->ensureDeadlineTimeAfterStartTime();
+        // 予約期限時間が営業終了時間より前か？
+        $this->ensureDeadlineTimeBeforeClosingTime();
         $isSuccess = $menu->update($request->getAllPrams());
         if (!$isSuccess) {
             Handler::exceptionFor409();
-            exit;
         }
         return (new JsonResponse)->make(
             [],
@@ -112,19 +112,16 @@ class MenusController extends BaseController
         $validator = $this->deleteRequest($request->getParam('menu_id'));
         if (!empty($validator)) {
             Handler::exceptionFor422($validator);
-            exit;
         }
         // メニューの存在確認
         $menu = new Menu();
         $menuEnsure = $menu->findById($request->getParam('menu_id'));
         if (empty($menuEnsure)) {
             Handler::exceptionFor428();
-            exit;
         }
         $isSuccess = $menu->delete($request->getParam('menu_id'));
         if (!$isSuccess) {
             Handler::exceptionFor409();
-            exit;
         }
         return (new JsonResponse)->make(
             [],

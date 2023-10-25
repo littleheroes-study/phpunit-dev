@@ -34,7 +34,6 @@ class StylistsController extends BaseController
         $stylist = $stylist->findById($request->getQuery('id'));
         if (empty($stylist)) {
             Handler::exceptionFor404();
-            exit;
         }
         return (new JsonResponse)->make(
             config('response.stylists.detail'),
@@ -49,20 +48,17 @@ class StylistsController extends BaseController
         $validator = $this->createRequest($request->getAllPrams());
         if (!empty($validator)) {
             Handler::exceptionFor422($validator);
-            exit;
         }
         // サロンの存在確認
         $salon = new Salon();
         $salonEnsure = $salon->findById($request->getParam('salon_id'));
         if (empty($salonEnsure)) {
             Handler::exceptionFor428();
-            exit;
         }
         $stylist = new Stylist();
         $isSuccess = $stylist->create($request->getAllPrams());
         if (!$isSuccess) {
             Handler::exceptionFor409();
-            exit;
         }
         return (new JsonResponse)->make(
             ['id'],
@@ -77,26 +73,22 @@ class StylistsController extends BaseController
         $validator = $this->updateRequest($request->getAllPrams());
         if (!empty($validator)) {
             Handler::exceptionFor422($validator);
-            exit;
         }
         // サロンの存在確認
         $salon = new Salon();
         $salonEnsure = $salon->findById($request->getParam('salon_id'));
         if (empty($salonEnsure)) {
             Handler::exceptionFor428();
-            exit;
         }
         // スタイリストの存在確認
         $stylist = new Stylist();
         $stylistEnsure = $stylist->findById($request->getParam('stylist_id'));
         if (empty($stylistEnsure)) {
             Handler::exceptionFor428();
-            exit;
         }
         $isSuccess = $stylist->update($request->getAllPrams());
         if (!$isSuccess) {
             Handler::exceptionFor409();
-            exit;
         }
         return (new JsonResponse)->make(
             [],
@@ -111,19 +103,16 @@ class StylistsController extends BaseController
         $validator = $this->deleteRequest($request->getParam('stylist_id'));
         if (!empty($validator)) {
             Handler::exceptionFor422($validator);
-            exit;
         }
         // スタイリストの存在確認
         $stylist = new Stylist();
         $stylistEnsure = $stylist->findById($request->getParam('stylist_id'));
         if (empty($stylistEnsure)) {
             Handler::exceptionFor428();
-            exit;
         }
         $isSuccess = $stylist->delete($request->getParam('stylist_id'));
         if (!$isSuccess) {
             Handler::exceptionFor409();
-            exit;
         }
         return (new JsonResponse)->make(
             [],

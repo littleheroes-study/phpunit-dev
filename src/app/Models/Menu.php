@@ -36,6 +36,9 @@ class Menu extends BaseModel
                 menus.id,
                 menus.salon_id,
                 salons.name as salon_name,
+                salons.start_time,
+                salons.closing_time,
+                salons.holiday,
                 menus.name,
                 menus.description,
                 menus.operation_time,
@@ -163,4 +166,37 @@ class Menu extends BaseModel
         }
         return $result;
     }
+
+    // public function findByIdWithSalon(int $id): array|false
+    // {
+    //     $sql = "
+    //         SELECT
+    //             menus.id,
+    //             menus.salon_id,
+    //             salons.name as salon_name,
+    //             menus.name,
+    //             menus.description,
+    //             menus.operation_time,
+    //             menus.deadline_time,
+    //             menus.amount,
+    //             menus.is_coupon,
+    //             menus.conditions
+    //         FROM 
+    //             menus
+    //         INNER JOIN 
+    //             salons
+    //         ON 
+    //             salons.id=menus.salon_id
+    //         WHERE 
+    //             menus.id=:id
+    //         AND 
+    //             menus.deleted_at IS NULL
+    //         ";
+    //     $stmt = $this->pdo->prepare($sql);
+    //     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    //     $stmt->execute();
+    //     $menu = $stmt->fetch(PDO::FETCH_ASSOC);
+    //     return $menu;
+    // }
+
 }
