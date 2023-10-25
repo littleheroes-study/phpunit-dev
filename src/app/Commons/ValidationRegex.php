@@ -1,6 +1,7 @@
 <?php
 namespace App\Commons;
 
+use DateTime;
 use App\Core\Request;
 use App\Enums\Gender;
 use App\Enums\PaymentType;
@@ -10,167 +11,6 @@ use phpDocumentor\Reflection\Types\Integer;
 
 class ValidationRegex
 {
-	/**
-	 * login時の正規表現
-	 * @param array リクエストボディーでリクエストされたパラメーター
-	 * @return mixed trueまたはエラーコード
-	 */
-	function loginCheck($params) {
-		$resultId = $this->loginIdCheck($params['login_id']);
-		$reultPw = $this->loginPwCheck($params['password']);
-		if (!is_bool($resultId)) {
-			return $resultId;
-		}
-		if (!is_bool($reultPw)) {
-			return $reultPw;
-		}
-
-		return true;
-	}
-
-	/**
-	 * login_idの正規表現
-	 * @param int $loginId リクエストボディでリクエストされたlogin_id
-	 * @return mixed trueまたはエラーコード
-	 */
-	function loginIdCheck($loginId) {
-		if (preg_match('/^([a-zA-Z0-9]{8,12})$/', $loginId)) {
-			return true;
-		} 
-		return 'E1002';
-	}
-
-	/**
-	 * login_pwの正規表現
-	 * @param int $loginPw リクエストボディでリクエストされたlogin_pw
-	 * @return mixed trueまたはエラーコード
-	 */
-	function loginPwCheck($loginPw) {
-		if (preg_match('/^([a-zA-Z0-9_-]{8,16})$/', $loginPw)) {
-			return true;
-		}
-		return 'E1003';
-	}
-
-	/**
-	 * tokenの正規表現
-	 * @param string $token リクエストヘッダーでリクエストされたtoken
-	 * @return mixed trueまたはエラーコード
-	 */
-	function tokenCheck($token) {
-		if (preg_match('/^([a-zA-Z0-9]{16})$/', $token)) {
-			return true;
-		}
-		
-		return 'E1004';
-	}
-
-	/**
-	 * movie_idの正規表現
-	 * @param string $token リクエストボディでリクエストされたmovie_id
-	 * @param mixed trueまたはエラーコード
-	 */
-	function movieIdCheck($movieId) {
-		if (preg_match('/^([0-9]{1,})$/', $movieId)) {
-			return true;
-		}
-		return 'E1005';
-	}
-
-	/**
-	 * commentの正規表現
-	 * @param string $token リクエストボディでリクエストされたcomment
-	 * @param mixed trueまたはエラーコード
-	 */
-	function commentCheck($comment) {
-		if (preg_match('/^.{1,250}$/', $comment)) {
-			return true;
-		}
-		return 'E1006';
-	}
-
-	/**
-	 * comment_idの正規表現
-	 * @param string $token リクエストボディでリクエストされたcomment_id
-	 * @param mixed trueまたはエラーコード
-	 */
-	function commentIdCheck($commentId) {
-		if (preg_match('/^([0-9]{1,})$/', $commentId)) {
-			return true;
-		}
-		return 'E1007';
-	}
-
-	/**
-	 * token movie_id の正規表現
-	 * @param string $token リクエストヘッダーでリクエストされたtoken
-	 * @param string $movieId リクエストボディでリクエストされたmovie_id
-	 * @return mixed trueまたはエラーコード
-	 */
-	function checkTokenAndMovieid($token, $movieId) {
-		$resultToken = $this->tokenCheck($token);
-		$resultMovieid = $this->movieIdCheck($movieId);
-		if (!is_bool($resultToken)) {
-			return $resultToken;
-		}
-		if (!is_bool($resultMovieid)) {
-			return $resultMovieid;
-		}
-		return true;
-	}
-
-	/**
-	 * token movie_id commentの正規表現
-	 * @param string $token リクエストヘッダーでリクエストされたtoken
-	 * @param string $requestParams リクエストボディでリクエストされたパラメーター
-	 * @return mixed trueまたはエラーコード
-	 */
-	function checkTokenAndMovieidAndComment($token, $requestParams) {
-		$resultTokenMovieid = $this->checkTokenAndMovieid($token, $requestParams['movie_id']);
-		$resultComment = $this->commentCheck($requestParams['comment']);
-		if (!is_bool($resultTokenMovieid)) {
-			return $resultTokenMovieid;
-		}
-		if (!is_bool($resultComment)) {
-			return $resultComment;
-		}
-		return true;
-	}
-
-	/**
-	 * token movie_id comment comment_id 正規表現
-	 * @param string $token リクエストヘッダーでリクエストされたtoken
-	 * @param array $requestParams リクエストボディでリクエストされたパラメーター
-	 */
-	function checkTokenAndMovieidAndCommentCommentid($token, $requestParams) {
-		$resultTokenMovieidcomment = $this->checkTokenAndMovieidAndComment($token, $requestParams);
-		$resultCommentid = $this->commentIdCheck($requestParams['comment_id']);
-		if (!is_bool($resultTokenMovieidcomment)) {
-			return $resultTokenMovieidcomment;
-		}
-		if (!is_bool($resultCommentid)) {
-			return $resultCommentid;
-		}
-		return true;
-	}
-
-	/**
-	 * token movie_id comment_id 正規表現
-	 * @param string $token リクエストヘッダーでリクエストされたtoken
-	 * @param array $requestParams リクエストボディでリクエストされたパラメーター
-	 */
-	function checkTokenAndMovieidCommentid($token, $requestParams) {
-		$resultTokenMovieid = $this->checkTokenAndMovieid($token, $requestParams['movie_id']);
-		$resultCommentid = $this->commentIdCheck($requestParams['comment_id']);
-		if (!is_bool($resultTokenMovieid)) {
-			return $resultTokenMovieid;
-		}
-		if (!is_bool($resultCommentid)) {
-			return $resultCommentid;
-		}
-		return true;
-	}
-
     /**
 	 * 必須項目のバリデーション
 	 */
@@ -198,8 +38,8 @@ class ValidationRegex
 	 */
 	public function textCheck(string $value): bool|string
     {
-        if ((mb_strlen($value) > 65535)) {
-            return '65535文字以内で入力して下さい。';
+        if ((mb_strlen($value) > 16383)) {
+            return '16383文字以内で入力して下さい。';
           }
 		return false;
 	}
@@ -208,7 +48,7 @@ class ValidationRegex
      * 項目：サロン名
 	 * 名前のバリデーション
 	 */
-	public function nameCheck(string $value): bool|string
+	public function nameCheck(?string $value): bool|string
     {
         if (
             $this->requiredCheck($value) ||
@@ -223,13 +63,13 @@ class ValidationRegex
      * 項目：サロン詳細、住所
 	 * 詳細のバリデーション
 	 */
-	public function descriptionCheck(string $value): bool|string
+	public function descriptionCheck(?string $value): bool|string
     {
         if (
             $this->requiredCheck($value) ||
             $this->textCheck($value)
         ) {
-            return '65535文字以内で入力して下さい。';
+            return '16383文字以内で入力して下さい。';
         }
         return false;
 	}
@@ -238,11 +78,12 @@ class ValidationRegex
      * 項目：郵便番号
 	 * 詳細のバリデーション
 	 */
-	public function zipcodeCheck(string $value): bool|string
+	public function zipcodeCheck(?string $value): bool|string
     {
         if (
             $this->requiredCheck($value) ||
-            $this->lengthCharacters7Check($value)
+            $this->lengthCharacters7Check($value) ||
+			!is_numeric($value)
         ) {
             return '郵便番号は半角数字7文字以内で入力して下さい。';
         }
@@ -263,9 +104,12 @@ class ValidationRegex
     /**
 	 * 最大長11-13文字のバリデーション
 	 */
-	public function phoneNumberCheck(string $value): bool|string
+	public function phoneNumberCheck(?string $value): bool|string
     {
-        if (!preg_match('/^([0-9]{10,13})$/', $value)) {
+        if (
+			$this->requiredCheck($value) ||
+			!preg_match('/^([0-9]{10,13})$/', $value)
+		) {
             return '電話番号は10文字以上、13文字以下で入力して下さい。';
           }
 		return false;
@@ -320,7 +164,7 @@ class ValidationRegex
 	 */
 	private function timeFormatCheck(string $value): false|string
     {
-        if (!preg_match('/\d{2}\:\d{2}\:\d{2}/', $value)){
+        if (!preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/', $value)){
             return '時間を入力して下さい。';
         }
 		return false;
@@ -341,7 +185,7 @@ class ValidationRegex
      * 項目：時間
 	 * 詳細のバリデーション
 	 */
-	public function timeCheck(string $value): false|string
+	public function timeCheck(?string $value): false|string
     {
         if (
             $this->requiredCheck($value) ||
@@ -381,11 +225,20 @@ class ValidationRegex
     /**
 	 * 定休日のバリデーション
 	 */
-	public function regularHolidayCheck(array $values): false|string
+	public function regularHolidayCheck(mixed $values): false|string
     {
+		if (
+			!is_array($values) ||
+			$this->similarCheck($values)
+		) {
+			return '定休日を正しく入力してください。';
+		}
+		if (empty($values)) {
+			return false;
+		}
         foreach($values as $value) {
-            if (!preg_match('/^([0-6])$/', $value)){
-                return '定休日は0から6で入力して下さい。';
+            if (!preg_match('/^([0-6])$/', $value)) {
+                return '定休日を正しく入力してください。';
             }
         }
 		return false;
@@ -394,8 +247,17 @@ class ValidationRegex
     /**
 	 * 支払い方法のバリデーション
 	 */
-	public function paymentMethodCheck(array $values): false|string
+	public function paymentMethodCheck(mixed $values): false|string
     {
+		if (
+			!is_array($values) ||
+			$this->similarCheck($values)
+		) {
+			return '指定の支払い方法を選択してください。';
+		}
+		if (empty($values)) {
+			return false;
+		}
         $PaymentTypeClass = new \ReflectionClass('App\Enums\PaymentType');
         $enums = $PaymentTypeClass->getConstants();
         foreach($values as $value) {
@@ -520,6 +382,35 @@ class ValidationRegex
 		if (!in_array($value, $enums)) {
             return '限定条件は正しく入力して下さい。';
         }
+		return false;
+	}
+
+	/**
+	 * 配列内の重複バリデーション
+	 */
+	public function similarCheck(array $list): ?bool
+	{
+		$valueCount = array_count_values($list);
+		if (empty($valueCount)) {
+			return false;
+		}
+		$max = max($valueCount);
+		if ($max !== 1) {
+			return '重複しない値を入力してください';
+		}
+		return false;
+	}
+
+	/**
+	 * 開店閉店時間の整合性
+	 */
+	public function ensureTimeCheck(string $open, string $close): false|string
+	{
+		$open = new DateTime($open);
+		$close = new DateTime($close);
+		if ($close <= $open) {
+			return '開店時間は閉店時刻以前に設定してください';
+		}
 		return false;
 	}
 }

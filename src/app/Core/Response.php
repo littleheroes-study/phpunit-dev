@@ -8,11 +8,11 @@ class Response
      * @var array
      */
     private $jsonConvertArray = [];
-    private $statusCode = 200;
+    protected $responseCode = 200;
 
     public function response(array $keys, array $resource, bool $isCollection, int $statusCode): void
     {
-        $this->statusCode = $statusCode;
+        $this->responseCode = $statusCode;
         if ($isCollection) {
             $this->groupConvert($keys, $resource);
         } else {
@@ -51,11 +51,29 @@ class Response
     /**
      * Json形式を出力
      */
-    public function responseJson(): void
+    private function responseJson(): void
     {
-        // ステータスコードを出力
-        header('Content-Type: application/json; charset=utf-8');
-	    http_response_code($this->statusCode);
+        $this->setResponseCode();
+        $this->setHeader();
         echo json_encode($this->jsonConvertArray, JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * レスポンスヘッダーを設定
+     */
+    protected function setHeader(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        header("Access-Control-Allow-Headers: Content-Disposition, Content-Type, Content-Length, Accept-Encoding");
+    }
+
+    /**
+     * ステータスコードを設定
+     */
+    protected function setResponseCode(): void
+    {
+	    http_response_code($this->responseCode);
     }
 }

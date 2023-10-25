@@ -95,7 +95,6 @@ class SalonsController extends BaseController implements ControllerInterface
         if (empty($result)) {
             Handler::exceptionFor404();
         }
-        // TODO: 認証機能追加後認可処理を追加する
         $isSuccess = $salon->delete($request->getPathParam('id'));
         if (!$isSuccess) {
             Handler::exceptionFor409();
@@ -134,6 +133,11 @@ class SalonsController extends BaseController implements ControllerInterface
         if ($msg = $validation->timeCheck($requestParam['closing_time'])) {
             $msgArray['closing_time'] = $msg;
         }
+        if (empty($msgArray['start_time']) && empty($msgArray['closing_time'])) {
+            if ($msg = $validation->ensureTimeCheck($requestParam['start_time'], $requestParam['closing_time'])) {
+                $msgArray['start_time'] = $msg;
+            }
+        }
         if ($msg = $validation->regularHolidayCheck($requestParam['holiday'])) {
             $msgArray['holiday'] = $msg;
         }
@@ -168,6 +172,11 @@ class SalonsController extends BaseController implements ControllerInterface
         }
         if ($msg = $validation->timeCheck($requestParam['closing_time'])) {
             $msgArray['closing_time'] = $msg;
+        }
+        if (empty($msgArray['start_time']) && empty($msgArray['closing_time'])) {
+            if ($msg = $validation->ensureTimeCheck($requestParam['start_time'], $requestParam['closing_time'])) {
+                $msgArray['start_time'] = $msg;
+            }
         }
         if ($msg = $validation->regularHolidayCheck($requestParam['holiday'])) {
             $msgArray['holiday'] = $msg;
