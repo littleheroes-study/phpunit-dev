@@ -2,13 +2,17 @@ version: '3.9' # ファイルのバージョン
 
 services:
   app: # サービス名は任意
+    container_name: app
     build: ./php
     # ↑ビルドコンテキストを指定 → docker buildを実行する際の現在の作業ディレクトリのこと
     # Dockerfileが置かれているディレクトリ
     volumes:
       - ./src:/data # ./srcディレクトリをappのコンテナ内/dataへマウント
+    networks:
+      - web
 
   web:
+    container_name: web
     image: nginx:1.22-alpine
     ports:
       - 8080:80 # ホスト側:コンテナ側
@@ -16,18 +20,50 @@ services:
       - ./src:/data
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     working_dir: /data
+    networks:
+      - web
 
   db:
+    container_name: db
     build: ./mysql
     ports:
-      - 3307:3306
+      - 3308:3306
     environment:
       - MYSQL_DATABASE=mysql_php
       - MYSQL_USER=phper
       - MYSQL_PASSWORD=drowssap
       - MYSQL_ROOT_PASSWORD=root
-    volumes:
-      - db-store:/var/lib/mysql
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    volumes:  
+      - ./mysql/db/data:/var/lib/mysql
+      - ./mysql/db/my.cnf:/etc/mysql/conf.d/my.cnf 
+      - ./mysql/db/sql:/docker-entrypoint-initdb.d
+    networks:
+      - web
+
+  db-test:
+    container_name: db-test
+    build: ./mysql
+    ports:
+      - 3338:3306
+    environment:
+      - MYSQL_DATABASE=mysql_php
+      - MYSQL_USER=phper
+      - MYSQL_PASSWORD=drowssap
+      - MYSQL_ROOT_PASSWORD=root
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    volumes:  
+      - ./mysql/db-test/data:/var/lib/mysql
+      - ./mysql/db-test/my.cnf:/etc/mysql/conf.d/my.cnf 
+      - ./mysql/db-test/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3336:3306
+    networks:
+      - web
 
 volumes:
   db-store:
+
+networks:
+  web:
+    driver: bridge
