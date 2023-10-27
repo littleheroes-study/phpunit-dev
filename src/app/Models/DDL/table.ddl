@@ -4,22 +4,18 @@ CREATE DATABASE `mysql_php` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8m
 
 CREATE TABLE `admins` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '管理者ID',
-  `name` varchar(255) NOT NULL COMMENT '名前',
-  `name_kana` varchar(255) NOT NULL COMMENT 'フリガナ',
-  `gender` enum('male','female') NOT NULL COMMENT '性別',
-  `uuid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '会員識別番号',
-  `status` enum('temporary','member') NOT NULL COMMENT '会員ステータス',
-  `email` varchar(255) NOT NULL COMMENT 'メールアドレス',
-  `phone_number` varchar(13) NOT NULL COMMENT '電話番号',
-  `password` varchar(255) NOT NULL COMMENT 'パスワード',
-  `zipcode` char(7) NOT NULL COMMENT '郵便番号',
-  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '住所',
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT '名前',
+  `name_kana` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'フリガナ',
+  `gender` enum('male','female') COLLATE utf8mb4_general_ci NOT NULL COMMENT '性別',
+  `token` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '認証トークン',
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'メールアドレス',
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'パスワード',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '登録日時',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日時',
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '削除日時',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `customers_UN` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='会員';
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='管理者';
+
 
 -- mysql_php.customers definition
 
@@ -28,19 +24,19 @@ CREATE TABLE `customers` (
   `name` varchar(255) NOT NULL COMMENT '会員名',
   `name_kana` varchar(255) NOT NULL COMMENT 'フリガナ',
   `gender` enum('male','female') NOT NULL COMMENT '性別',
-  `uuid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '会員識別番号',
+  `uuid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '会員識別番号',
   `status` enum('temporary','member') NOT NULL COMMENT '会員ステータス',
   `email` varchar(255) NOT NULL COMMENT 'メールアドレス',
   `phone_number` varchar(13) NOT NULL COMMENT '電話番号',
   `password` varchar(255) NOT NULL COMMENT 'パスワード',
   `zipcode` char(7) NOT NULL COMMENT '郵便番号',
-  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '住所',
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '住所',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '登録日時',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日時',
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '削除日時',
   PRIMARY KEY (`id`),
   UNIQUE KEY `customers_UN` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='会員';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='会員';
 
 
 -- mysql_php.salons definition
@@ -54,13 +50,13 @@ CREATE TABLE `salons` (
   `phone_number` varchar(13) NOT NULL COMMENT '電話番号',
   `start_time` time NOT NULL COMMENT '営業開始時間',
   `closing_time` time NOT NULL COMMENT '営業終了時間',
-  `holiday` set('0','1','2','3','4','5','6') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '定休日',
+  `holiday` set('0','1','2','3','4','5','6') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '定休日',
   `payment_methods` set('Cash','Visa','Mastercard','JCB','American Express','PayPay','Suica','Edy') NOT NULL COMMENT '支払い方法',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '登録日時',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日時',
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '削除日時',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='サロン';
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='サロン';
 
 
 -- mysql_php.menus definition
@@ -74,14 +70,14 @@ CREATE TABLE `menus` (
   `deadline_time` time NOT NULL COMMENT '予約期限時間【時】',
   `amount` int unsigned NOT NULL DEFAULT '0' COMMENT '金額【税込】',
   `is_coupon` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'クーポン区分',
-  `conditions` enum('anyone','female','male') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'anyone' COMMENT '限定条件',
+  `conditions` enum('anyone','female','male') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'anyone' COMMENT '限定条件',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '登録日時',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日時',
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '削除日時',
   PRIMARY KEY (`id`),
   KEY `menus_FK` (`salon_id`),
   CONSTRAINT `menus_FK` FOREIGN KEY (`salon_id`) REFERENCES `salons` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='サロン';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='サロン';
 
 
 -- mysql_php.stylists definition
@@ -101,7 +97,7 @@ CREATE TABLE `stylists` (
   PRIMARY KEY (`id`),
   KEY `stylists_FK` (`salon_id`),
   CONSTRAINT `stylists_FK` FOREIGN KEY (`salon_id`) REFERENCES `salons` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='スタイリスト';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='スタイリスト';
 
 
 -- mysql_php.reservations definition
@@ -124,4 +120,4 @@ CREATE TABLE `reservations` (
   CONSTRAINT `reservations_FK` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
   CONSTRAINT `reservations_FK_1` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`),
   CONSTRAINT `reservations_FK_2` FOREIGN KEY (`stylist_id`) REFERENCES `stylists` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='予約';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='予約';
