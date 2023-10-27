@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Salon;
 use App\Core\Request;
 use App\Core\Handler;
+use App\DTO\FindManager;
 use App\Enums\StatusCode;
 use App\Commons\JsonResponse;
 use App\Commons\ValidationRegex;
@@ -18,10 +19,11 @@ class SalonsController extends BaseController implements ControllerInterface
     | サロン管理
     |--------------------------------------------------------------------------
     */
-    public function index()
+    public function index(Request $request)
     {
+        $findManager = FindManager::setFindParam($request->getAllQueries());
         $salon = new Salon();
-        $salons = $salon->getAll();
+        $salons = $salon->getAll($findManager);
         return (new JsonResponse)->make(
             config('response.salons.index'),
             $salons,

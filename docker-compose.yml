@@ -33,7 +33,7 @@ services:
       - MYSQL_USER=phper
       - MYSQL_PASSWORD=drowssap
       - MYSQL_ROOT_PASSWORD=root
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     volumes:  
       - ./mysql/db/data:/var/lib/mysql
       - ./mysql/db/my.cnf:/etc/mysql/conf.d/my.cnf 
@@ -51,7 +51,7 @@ services:
       - MYSQL_USER=phper
       - MYSQL_PASSWORD=drowssap
       - MYSQL_ROOT_PASSWORD=root
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     volumes:  
       - ./mysql/db-test/data:/var/lib/mysql
       - ./mysql/db-test/my.cnf:/etc/mysql/conf.d/my.cnf 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use \PDO;
+use App\DTO\FindManager;
 use App\Models\BaseModel;
 
 class Salon extends BaseModel
@@ -12,7 +13,7 @@ class Salon extends BaseModel
     | サロンモデル
     |--------------------------------------------------------------------------
     */
-    public function getAll(): array
+    public function getAll(FindManager $findManager): array
     {
         $sql = "
             SELECT 
@@ -24,6 +25,9 @@ class Salon extends BaseModel
             WHERE 
                 deleted_at IS NULL
             ";
+        if (!is_null($findManager->skip) && !is_null($findManager->take)) {
+            $sql .= "LIMIT {$findManager->skip},{$findManager->take}";
+        }
         $stmt = $this->pdo->query($sql);
         $salons = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $salons;

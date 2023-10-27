@@ -1,4 +1,25 @@
-CREATE DATABASE `mysql_php` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_ja_0900_as_cs_ks */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE `mysql_php` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+-- mysql_php.admins definition
+
+CREATE TABLE `admins` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '管理者ID',
+  `name` varchar(255) NOT NULL COMMENT '名前',
+  `name_kana` varchar(255) NOT NULL COMMENT 'フリガナ',
+  `gender` enum('male','female') NOT NULL COMMENT '性別',
+  `uuid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '会員識別番号',
+  `status` enum('temporary','member') NOT NULL COMMENT '会員ステータス',
+  `email` varchar(255) NOT NULL COMMENT 'メールアドレス',
+  `phone_number` varchar(13) NOT NULL COMMENT '電話番号',
+  `password` varchar(255) NOT NULL COMMENT 'パスワード',
+  `zipcode` char(7) NOT NULL COMMENT '郵便番号',
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '住所',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '登録日時',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日時',
+  `deleted_at` timestamp NULL DEFAULT NULL COMMENT '削除日時',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `customers_UN` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='会員';
 
 -- mysql_php.customers definition
 

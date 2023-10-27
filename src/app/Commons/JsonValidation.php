@@ -42,7 +42,6 @@ class JsonValidation
 		if (!in_array(false, $result)) {
 			return true;
 		}
-
 		return 'E1001';
 	}
 
@@ -68,7 +67,6 @@ class JsonValidation
 		if (is_array($param)) {
 			return true;
 		}
-		
 		return false;
 	}
 	
@@ -83,7 +81,6 @@ class JsonValidation
 			if (isset($param[$key])) {
 				return true;
 			}
-
 			return false;
 		}
 	}

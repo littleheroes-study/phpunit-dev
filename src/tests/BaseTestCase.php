@@ -9,7 +9,7 @@ class BaseTestCase extends TestCase
 {
     protected $pdo;
     private string $protocol = 'http://'; // プロトコル
-    private string $myIP = '192.168.1.143'; // テスト利用時に設定する
+    private string $myIP = '192.168.1.148'; // テスト利用時に設定する
     private string $port = '8080'; // Dockerのappコンテナポート番号
     private string $baseUrl;
     /*
