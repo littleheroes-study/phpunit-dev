@@ -88,7 +88,8 @@ class Admin extends BaseModel
     {
         $sql = "
             SELECT 
-                *
+                id,
+                password
             FROM 
                 admins
             WHERE 
@@ -134,7 +135,7 @@ class Admin extends BaseModel
     {
         $sql = "
             SELECT 
-                *
+                token_expired_at
             FROM 
                 admins
             WHERE 

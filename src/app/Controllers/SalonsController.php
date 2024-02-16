@@ -14,16 +14,17 @@ use App\Controllers\ControllerInterface;
 
 class SalonsController extends BaseController implements ControllerInterface
 {
-    public function __construct(Request $request)
-    {
-        parent::__construct($request);
-        $this->authentication();
-    }
     /*
     |--------------------------------------------------------------------------
     | サロン管理
     |--------------------------------------------------------------------------
     */
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        $this->authentication();
+    }
+
     public function index()
     {
         $findManager = FindManager::setFindParam($this->request->getAllQueries());

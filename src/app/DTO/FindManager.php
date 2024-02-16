@@ -31,7 +31,6 @@ class FindManager
     {
         $skip = isset($pathParams['skip']) && is_numeric($pathParams['skip']) && ctype_digit($pathParams['skip']) ? (int)$pathParams['skip'] : self::SKIP_COUNT;
         $take = isset($pathParams['take']) && is_numeric($pathParams['take']) && ctype_digit($pathParams['take']) ? (int)$pathParams['take'] : self::MAX_PAGE;
-
         return new self($skip, $take);
     }
 }
