@@ -44,8 +44,6 @@ services:
   db-test:
     container_name: db-test
     build: ./mysql
-    ports:
-      - 3338:3306
     environment:
       - MYSQL_DATABASE=mysql_php
       - MYSQL_USER=phper

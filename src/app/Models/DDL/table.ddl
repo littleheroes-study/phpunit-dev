@@ -4,17 +4,18 @@ CREATE DATABASE `mysql_php` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8m
 
 CREATE TABLE `admins` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '管理者ID',
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT '名前',
-  `name_kana` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'フリガナ',
-  `gender` enum('male','female') COLLATE utf8mb4_general_ci NOT NULL COMMENT '性別',
-  `token` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '認証トークン',
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'メールアドレス',
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'パスワード',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名前',
+  `name_kana` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'フリガナ',
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '認証トークン',
+  `token_expired_at` timestamp NULL DEFAULT NULL COMMENT '認証トークン有効期限',
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'メールアドレス',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'パスワード',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '登録日時',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日時',
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '削除日時',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='管理者';
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='管理者';
 
 
 -- mysql_php.customers definition

@@ -5,7 +5,6 @@ namespace App\Controllers;
 use DateTime;
 use App\Core\Handler;
 use App\Core\Request;
-use App\Models\Salon;
 use App\Models\Menu;
 use App\Models\Stylist;
 use App\Models\Customer;
@@ -23,6 +22,12 @@ class ReservationsController extends BaseController
     | 予約管理
     |--------------------------------------------------------------------------
     */
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        $this->authentication();
+    }
+
     public function index()
     {
         $reservation = new Reservation();

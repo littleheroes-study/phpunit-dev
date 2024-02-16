@@ -18,6 +18,12 @@ class MenusController extends BaseController
     | メニュー管理
     |--------------------------------------------------------------------------
     */
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        $this->authentication();
+    }
+
     public function index()
     {
         $menu = new Menu();

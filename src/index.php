@@ -31,7 +31,6 @@ Config::set_config_directory(__DIR__ . '/Config');
 $routing = new Routing($_SERVER);
 $request = new Request();
 
-
 /*
 |------------------------------------------------------------------------
 | Call Controller
@@ -41,5 +40,4 @@ $request = new Request();
 $controller = $routing->getController();
 $action     = $routing->getAction();
 
-echo (new App($controller, $action))->executeAction($request);
-// var_dump('完了');
+echo (new App($controller, $action, $request))->executeAction();

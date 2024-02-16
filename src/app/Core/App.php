@@ -21,10 +21,16 @@ class App
      */
     protected $action;
 
-    public function __construct(string $controller, string $action)
+    /**
+     * request名
+     */
+    protected $request;
+
+    public function __construct(string $controller, string $action, Request $request)
     {
-        $this->setController($controller);
+        $this->request = $request;
         $this->action = $action;
+        $this->setController($controller);
     }
 
     /**
@@ -33,15 +39,15 @@ class App
     private function setController($controller): void
     {
         $callController = '\\' . self::CONTROLLER .'\\' . $controller;
-        $this->controller = new $callController();
+        $this->controller = new $callController($this->request);
     }
 
     /**
      * Action実行
      */
-    public function executeAction(Request $request)
+    public function executeAction()
     {
         $action = $this->action;
-        return $this->controller->$action($request);
+        return $this->controller->$action();
     }
 }
