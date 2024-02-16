@@ -128,8 +128,7 @@ class Routing
             $this->isPut() ||
             $this->isDelete()
         ) {
-            $pathParam = (empty($exploded[2])) ? false : $exploded[2];
-            $pathParam = (strpos($pathParam, '?')) ? strstr($pathParam, '?', true) : $pathParam;
+            $pathParam = (empty($exploded[3])) ? 0 : $exploded[3];
         }
         return is_numeric($pathParam);
     }

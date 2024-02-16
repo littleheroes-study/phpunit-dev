@@ -14,14 +14,19 @@ use App\Controllers\ControllerInterface;
 
 class SalonsController extends BaseController implements ControllerInterface
 {
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        $this->authentication();
+    }
     /*
     |--------------------------------------------------------------------------
     | サロン管理
     |--------------------------------------------------------------------------
     */
-    public function index(Request $request)
+    public function index()
     {
-        $findManager = FindManager::setFindParam($request->getAllQueries());
+        $findManager = FindManager::setFindParam($this->request->getAllQueries());
         $salon = new Salon();
         $salons = $salon->getAll($findManager);
         return (new JsonResponse)->make(
@@ -31,10 +36,10 @@ class SalonsController extends BaseController implements ControllerInterface
         );
     }
 
-    public function detail(Request $request)
+    public function detail()
     {
         $salon = new Salon();
-        $salon = $salon->findById($request->getPathParam('id'));
+        $salon = $salon->findById($this->request->getPathParam('id'));
         if (empty($salon)) {
             Handler::exceptionFor404();
         }
@@ -46,14 +51,14 @@ class SalonsController extends BaseController implements ControllerInterface
         );
     }
 
-    public function create(Request $request)
+    public function create()
     {
-        $validator = $this->createRequest($request->getAllPrams());
+        $validator = $this->createRequest($this->request->getAllPrams());
         if (!empty($validator)) {
             Handler::exceptionFor422($validator);
         }
         $salon = new Salon();
-        $isSuccess = $salon->create($request->getAllPrams());
+        $isSuccess = $salon->create($this->request->getAllPrams());
         if (!$isSuccess) {
             Handler::exceptionFor409();
         }
@@ -65,20 +70,20 @@ class SalonsController extends BaseController implements ControllerInterface
         );
     }
 
-    public function update(Request $request)
+    public function update()
     {
-        $validator = $this->updateRequest($request->getAllPrams());
+        $validator = $this->updateRequest($this->request->getAllPrams());
         if (!empty($validator)) {
             Handler::exceptionFor422($validator);
         }
         $salon = new Salon();
-        $result = $salon->findById($request->getPathParam('id'));
+        $result = $salon->findById($this->request->getPathParam('id'));
         if (empty($result)) {
             Handler::exceptionFor404();
         }
-        $request->parameters['salon_id'] = $request->getPathParam('id');
+        $this->request->parameters['salon_id'] = $this->request->getPathParam('id');
         $salon = new Salon();
-        $isSuccess = $salon->update($request->getAllPrams());
+        $isSuccess = $salon->update($this->request->getAllPrams());
         if (!$isSuccess) {
             Handler::exceptionFor409();
         }
@@ -90,14 +95,14 @@ class SalonsController extends BaseController implements ControllerInterface
         );
     }
 
-    public function delete(Request $request)
+    public function delete()
     {
         $salon = new Salon();
-        $result = $salon->findById($request->getPathParam('id'));
+        $result = $salon->findById($this->request->getPathParam('id'));
         if (empty($result)) {
             Handler::exceptionFor404();
         }
-        $isSuccess = $salon->delete($request->getPathParam('id'));
+        $isSuccess = $salon->delete($this->request->getPathParam('id'));
         if (!$isSuccess) {
             Handler::exceptionFor409();
         }

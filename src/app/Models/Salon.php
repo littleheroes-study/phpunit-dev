@@ -123,6 +123,8 @@ class Salon extends BaseModel
                 payment_methods = :payment_methods 
             WHERE 
                 id = :salon_id
+            AND
+                deleted_at IS NULL
         ";
         $stmt = $this->pdo->prepare($sql);
         $this->pdo->beginTransaction();
@@ -155,6 +157,8 @@ class Salon extends BaseModel
                 deleted_at = now() 
             WHERE 
                 id = :id
+            AND
+                deleted_at IS NULL
             ";
         $stmt = $this->pdo->prepare($sql);
         $this->pdo->beginTransaction();

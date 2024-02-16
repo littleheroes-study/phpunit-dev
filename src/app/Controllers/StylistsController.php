@@ -17,6 +17,12 @@ class StylistsController extends BaseController
     | スタイリスト管理
     |--------------------------------------------------------------------------
     */
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        $this->authentication();
+    }
+
     public function index()
     {
         $stylist = new Stylist();

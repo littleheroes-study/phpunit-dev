@@ -41,5 +41,5 @@ $request = new Request();
 $controller = $routing->getController();
 $action     = $routing->getAction();
 
-echo (new App($controller, $action))->executeAction($request);
+echo (new App($controller, $action, $request))->executeAction();
 // var_dump('完了');
