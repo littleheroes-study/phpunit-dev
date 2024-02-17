@@ -120,8 +120,6 @@ class Stylist extends BaseModel
             $result = $stmt->execute();
             $this->pdo->commit();
         } catch (\Exception $e) {
-            var_dump($e);
-            exit;
             $this->pdo->rollBack();
             return false;
         }

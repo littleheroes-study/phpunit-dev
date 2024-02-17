@@ -8,6 +8,7 @@ services:
     # Dockerfileが置かれているディレクトリ
     volumes:
       - ./src:/data # ./srcディレクトリをappのコンテナ内/dataへマウント
+    tty: true
     networks:
       - web
 

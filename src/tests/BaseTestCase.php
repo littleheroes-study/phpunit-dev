@@ -2,6 +2,7 @@
 namespace Tests;
 
 use PDO;
+use App\Core\Config;
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
 
@@ -9,9 +10,11 @@ class BaseTestCase extends TestCase
 {
     protected $pdo;
     private string $protocol = 'http://'; // プロトコル
-    private string $myIP = '192.168.1.148'; // テスト利用時に設定する
+    private string $myIP = 'host.docker.internal'; // テスト利用時に設定する
     private string $port = '8080'; // Dockerのappコンテナポート番号
     private string $baseUrl;
+    protected $authAdmin;
+    protected $token;
     /*
     |--------------------------------------------------------------------------
     | BaseTestCase
@@ -70,9 +73,63 @@ class BaseTestCase extends TestCase
             $sql = "ALTER TABLE salons AUTO_INCREMENT = 1;";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
+            // 管理者テーブル削除
+            $sql = "DELETE FROM admins";
+            $stmt = $this->pdo->prepare($sql);
+            $result = $stmt->execute();
+            // シーケンスのリセット
+            $sql = "ALTER TABLE admins AUTO_INCREMENT = 1;";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
         } catch (\Exception $e) {
             var_dump($e);
         }
+    }
+
+    public function authenticated()
+    {
+        Config::set_config_directory('/data/Config');
+        $password = password_hash('password', PASSWORD_DEFAULT);
+        $sql = "
+            INSERT INTO admins 
+                (
+                    name,
+                    name_kana,
+                    email,
+                    password
+                )
+            VALUES 
+                (
+                    '管理者1',
+                    'カンリシャイチ',
+                    'admin1@example.com',
+                    '{$password}'
+                )
+            ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $adminId = $this->pdo->lastInsertId();
+
+        $sql = "SELECT * FROM admins WHERE id = {$adminId}";
+        $stmt = $this->pdo->query($sql);
+        $this->authAdmin = $stmt->fetch(PDO::FETCH_ASSOC);
+        $client = new Client();
+        $response = $client->request(
+            'POST',
+            $this->baseUrl . '/login',
+            [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => json_encode([
+                    'login_id' => 'admin1@example.com',
+                    'password' => 'password'
+                ])
+            ]
+        );
+        $responseData = json_decode($response->getBody()->getContents(), true);
+        $this->token = $responseData['token'];
     }
 
     public function execGetRequest(string $path = '') {
@@ -84,6 +141,7 @@ class BaseTestCase extends TestCase
                 'headers' => [
                     'Accept' => 'application/json',
                     'Content-Type' => 'application/json',
+                    'Authorization' => $this->token,
                 ],
             ]
         );
@@ -99,6 +157,7 @@ class BaseTestCase extends TestCase
                 'headers' => [
                     'Accept' => 'application/json',
                     'Content-Type' => 'application/json',
+                    'Authorization' => $this->token,
                 ],
                 'body' => json_encode($options)
             ]);
@@ -114,6 +173,7 @@ class BaseTestCase extends TestCase
                 'headers' => [
                     'Accept' => 'application/json',
                     'Content-Type' => 'application/json',
+                    'Authorization' => $this->token,
                 ],
                 'body' => json_encode($options)
             ]);
@@ -129,6 +189,7 @@ class BaseTestCase extends TestCase
                 'headers' => [
                     'Accept' => 'application/json',
                     'Content-Type' => 'application/json',
+                    'Authorization' => $this->token,
                 ],
             ]);
         return $response;

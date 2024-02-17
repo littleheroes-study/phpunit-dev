@@ -26,14 +26,14 @@ abstract class BaseModel
     {
         $host = config('database.connection.host'); // 開発環境のドメイン
         $dbname = config('database.connection.dbname'); // 開発環境のデータベース名
-        $user = 
+        $user = config('database.connection.user'); // 開発環境のユーザー名
         $pass = config('database.connection.password'); // 開発環境のデータベースに指定したパスワード
         $dns = "mysql:host=" . $host . ";dbname=" . $dbname . ";";
         try
         {
             $pdo = new PDO(
                 $dns, 
-                config('database.connection.user'), // 開発環境のデータベースのユーザー名 
+                $user,
                 $pass, 
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

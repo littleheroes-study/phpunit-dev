@@ -192,8 +192,6 @@ class Reservation extends BaseModel
 
     public function findByVisitAt($operationStartTime, $operationEndTime, $salonId, ?int $stylistId): int
     {
-        // var_dump($operationStartTime, $operationEndTime);
-        // exit;
         $addSql = "count(reservations.id) < (SELECT count(stylists.id) FROM stylists WHERE stylists.salon_id = :salon_id)";
         if (!empty($stylistId)) {
             $addSql = "reservations.stylist_id = :stylist_id";

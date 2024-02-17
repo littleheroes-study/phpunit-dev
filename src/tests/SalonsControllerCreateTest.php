@@ -46,6 +46,7 @@ class SalonsControllerCreateTest extends TestCase
         $baseOptions = $this->createBaseOptions();
         $expected = ['id' => 1];
         $expected = json_encode($expected);
+        $this->authenticated();
         $response = $this->execPostRequest('/salons', $baseOptions);
         $this->assertEquals(StatusCode::CREATED, $response->getStatusCode());
         $response = $response->getBody()->getContents();
@@ -59,6 +60,7 @@ class SalonsControllerCreateTest extends TestCase
     public function testValidationName($expected, $testData) {
         $baseOptions = $this->createBaseOptions();
         $baseOptions['name'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -88,6 +90,7 @@ class SalonsControllerCreateTest extends TestCase
     public function testValidationDescription($expected, $testData) {
         $baseOptions = $this->createBaseOptions();
         $baseOptions['description'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -117,6 +120,7 @@ class SalonsControllerCreateTest extends TestCase
     public function testValidationZipcode($expected, $testData) {
         $baseOptions = $this->createBaseOptions();
         $baseOptions['zipcode'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -147,6 +151,7 @@ class SalonsControllerCreateTest extends TestCase
     public function testValidationAddress($expected, $testData) {
         $baseOptions = $this->createBaseOptions();
         $baseOptions['address'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -176,6 +181,7 @@ class SalonsControllerCreateTest extends TestCase
     public function testValidationPhoneNumber($expected, $testData) {
         $baseOptions = $this->createBaseOptions();
         $baseOptions['phone_number'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -207,6 +213,7 @@ class SalonsControllerCreateTest extends TestCase
     public function testValidationStartTime($expected, $testData) {
         $baseOptions = $this->createBaseOptions();
         $baseOptions['start_time'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -243,6 +250,7 @@ class SalonsControllerCreateTest extends TestCase
     public function testValidationClosingTime($expected, $testData) {
         $baseOptions = $this->createBaseOptions();
         $baseOptions['closing_time'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -279,6 +287,7 @@ class SalonsControllerCreateTest extends TestCase
     public function testValidationHoliday($expected, $testData) {
         $baseOptions = $this->createBaseOptions();
         $baseOptions['holiday'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -361,6 +370,7 @@ class SalonsControllerCreateTest extends TestCase
     public function testValidationPaymentMethods($expected, $testData) {
         $baseOptions = $this->createBaseOptions();
         $baseOptions['payment_methods'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());

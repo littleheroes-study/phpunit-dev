@@ -5,5 +5,5 @@ return [
         'dbname' => 'mysql_php',
         'user' => 'phper',
         'password' => 'drowssap'
-    ]
+    ],
 ];

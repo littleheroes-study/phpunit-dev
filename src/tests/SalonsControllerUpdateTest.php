@@ -77,15 +77,16 @@ class SalonsControllerUpdateTest extends TestCase
         return $baseOptions;
     }
 
-    // /**
-    //  * 正常系確認テスト
-    //  */
-    // public function testUpdateSuccess() {
-    //     $salonId = $this->createSalon();
-    //     $baseOptions = $this->updateBaseOptions();
-    //     $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
-    //     $this->assertEquals(StatusCode::NO_CONTENT, $response->getStatusCode());
-    // }
+    /**
+     * 正常系確認テスト
+     */
+    public function testUpdateSuccess() {
+        $salonId = $this->createSalon();
+        $baseOptions = $this->updateBaseOptions();
+        $this->authenticated();
+        $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
+        $this->assertEquals(StatusCode::NO_CONTENT, $response->getStatusCode());
+    }
 
     /**
      * 存在しないデータへの更新テスト
@@ -93,6 +94,7 @@ class SalonsControllerUpdateTest extends TestCase
     public function testUpdateFailure() {
         $salonId = 999999;
         $baseOptions = $this->updateBaseOptions();
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
         } catch (\Exception $e) {
@@ -106,6 +108,7 @@ class SalonsControllerUpdateTest extends TestCase
     public function testUpdatePathParamFailure() {
         $salonId = 'hogehoge';
         $baseOptions = $this->updateBaseOptions();
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
         } catch (\Exception $e) {
@@ -123,6 +126,7 @@ class SalonsControllerUpdateTest extends TestCase
         $stmt->execute();
         $deleteSalonId =  (int) $this->pdo->lastInsertId();
         $baseOptions = $this->updateBaseOptions();
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $deleteSalonId, $baseOptions);
         } catch (\Exception $e) {
@@ -138,6 +142,7 @@ class SalonsControllerUpdateTest extends TestCase
         $salonId = $this->createSalon();
         $baseOptions = $this->updateBaseOptions();
         $baseOptions['name'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -168,6 +173,7 @@ class SalonsControllerUpdateTest extends TestCase
         $salonId = $this->createSalon();
         $baseOptions = $this->updateBaseOptions();
         $baseOptions['description'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -198,6 +204,7 @@ class SalonsControllerUpdateTest extends TestCase
         $salonId = $this->createSalon();
         $baseOptions = $this->updateBaseOptions();
         $baseOptions['zipcode'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -229,6 +236,7 @@ class SalonsControllerUpdateTest extends TestCase
         $salonId = $this->createSalon();
         $baseOptions = $this->updateBaseOptions();
         $baseOptions['address'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -259,6 +267,7 @@ class SalonsControllerUpdateTest extends TestCase
         $salonId = $this->createSalon();
         $baseOptions = $this->updateBaseOptions();
         $baseOptions['phone_number'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -291,6 +300,7 @@ class SalonsControllerUpdateTest extends TestCase
         $salonId = $this->createSalon();
         $baseOptions = $this->updateBaseOptions();
         $baseOptions['start_time'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -328,6 +338,7 @@ class SalonsControllerUpdateTest extends TestCase
         $salonId = $this->createSalon();
         $baseOptions = $this->updateBaseOptions();
         $baseOptions['closing_time'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -365,6 +376,7 @@ class SalonsControllerUpdateTest extends TestCase
         $salonId = $this->createSalon();
         $baseOptions = $this->updateBaseOptions();
         $baseOptions['holiday'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());
@@ -448,6 +460,7 @@ class SalonsControllerUpdateTest extends TestCase
         $salonId = $this->createSalon();
         $baseOptions = $this->updateBaseOptions();
         $baseOptions['payment_methods'] = $testData;
+        $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
             $this->assertEquals($expected, $response->getStatusCode());

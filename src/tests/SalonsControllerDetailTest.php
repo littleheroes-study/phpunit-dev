@@ -66,6 +66,7 @@ class SalonsControllerDetailTest extends TestCase
             'holiday' => '2',
             'payment_methods' => 'Cash'
         ];
+        $this->authenticated();
         $response = $this->execGetRequest('/salons/' . $salonId);
         $this->assertEquals(StatusCode::OK, $response->getStatusCode());
         $this->assertEquals($expected, json_decode($response->getBody()->getContents(), true));
@@ -76,6 +77,7 @@ class SalonsControllerDetailTest extends TestCase
      */
     public function testDeleteFailure() {
         $salonId = 999999;
+        $this->authenticated();
         try {
             $response = $this->execGetRequest('/salons/' . $salonId);
         } catch (\Exception $e) {
@@ -88,6 +90,7 @@ class SalonsControllerDetailTest extends TestCase
      */
     public function testDeletePathParamFailure() {
         $salonId = 'hogehoge';
+        $this->authenticated();
         try {
             $response = $this->execGetRequest('/salons/' . $salonId);
         } catch (\Exception $e) {
@@ -105,6 +108,7 @@ class SalonsControllerDetailTest extends TestCase
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $deleteSalonId =  (int) $this->pdo->lastInsertId();
+        $this->authenticated();
         try {
             $response = $this->execGetRequest('/salons/' . $deleteSalonId);
         } catch (\Exception $e) {

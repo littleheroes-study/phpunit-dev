@@ -54,6 +54,7 @@ class SalonsControllerDeleteTest extends TestCase
      */
     public function testDeleteSuccess() {
         $salonId = $this->createSalon();
+        $this->authenticated();
         $response = $this->execDeleteRequest('/salons/' . $salonId);
         $this->assertEquals(StatusCode::NO_CONTENT, $response->getStatusCode());
     }
@@ -63,6 +64,7 @@ class SalonsControllerDeleteTest extends TestCase
      */
     public function testDeleteFailure() {
         $salonId = 999999;
+        $this->authenticated();
         try {
             $response = $this->execDeleteRequest('/salons/' . $salonId);
         } catch (\Exception $e) {
@@ -75,6 +77,7 @@ class SalonsControllerDeleteTest extends TestCase
      */
     public function testDeletePathParamFailure() {
         $salonId = 'hogehoge';
+        $this->authenticated();
         try {
             $response = $this->execDeleteRequest('/salons/' . $salonId);
         } catch (\Exception $e) {
@@ -91,6 +94,7 @@ class SalonsControllerDeleteTest extends TestCase
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $deleteSalonId =  (int) $this->pdo->lastInsertId();
+        $this->authenticated();
         try {
             $response = $this->execDeleteRequest('/salons/' . $deleteSalonId);
         } catch (\Exception $e) {

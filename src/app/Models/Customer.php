@@ -126,8 +126,6 @@ class Customer extends BaseModel
             $result = $stmt->execute();
             $this->pdo->commit();
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
-            exit;
             $this->pdo->rollBack();
             return false;
         }
