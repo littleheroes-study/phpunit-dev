@@ -56,7 +56,7 @@ class SalonsControllerDeleteTest extends TestCase
         $salonId = $this->createSalon();
         $this->authenticated();
         $response = $this->execDeleteRequest('/salons/' . $salonId);
-        $this->assertEquals(StatusCode::NO_CONTENT, $response->getStatusCode());
+        $this->assertSame(StatusCode::NO_CONTENT, $response->getStatusCode());
     }
 
     /**
@@ -68,7 +68,7 @@ class SalonsControllerDeleteTest extends TestCase
         try {
             $response = $this->execDeleteRequest('/salons/' . $salonId);
         } catch (\Exception $e) {
-            $this->assertEquals(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
+            $this->assertSame(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -81,7 +81,7 @@ class SalonsControllerDeleteTest extends TestCase
         try {
             $response = $this->execDeleteRequest('/salons/' . $salonId);
         } catch (\Exception $e) {
-            $this->assertEquals(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
+            $this->assertSame(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -98,7 +98,7 @@ class SalonsControllerDeleteTest extends TestCase
         try {
             $response = $this->execDeleteRequest('/salons/' . $deleteSalonId);
         } catch (\Exception $e) {
-            $this->assertEquals(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
+            $this->assertSame(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
         }
     }
 }

@@ -85,7 +85,7 @@ class SalonsControllerUpdateTest extends TestCase
         $baseOptions = $this->updateBaseOptions();
         $this->authenticated();
         $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
-        $this->assertEquals(StatusCode::NO_CONTENT, $response->getStatusCode());
+        $this->assertSame(StatusCode::NO_CONTENT, $response->getStatusCode());
     }
 
     /**
@@ -98,7 +98,7 @@ class SalonsControllerUpdateTest extends TestCase
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
         } catch (\Exception $e) {
-            $this->assertEquals(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
+            $this->assertSame(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -112,7 +112,7 @@ class SalonsControllerUpdateTest extends TestCase
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
         } catch (\Exception $e) {
-            $this->assertEquals(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
+            $this->assertSame(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -130,7 +130,7 @@ class SalonsControllerUpdateTest extends TestCase
         try {
             $response = $this->execPutRequest('/salons/' . $deleteSalonId, $baseOptions);
         } catch (\Exception $e) {
-            $this->assertEquals(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
+            $this->assertSame(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -145,9 +145,9 @@ class SalonsControllerUpdateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -176,9 +176,9 @@ class SalonsControllerUpdateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -207,9 +207,9 @@ class SalonsControllerUpdateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -239,9 +239,9 @@ class SalonsControllerUpdateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -270,9 +270,9 @@ class SalonsControllerUpdateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -303,9 +303,9 @@ class SalonsControllerUpdateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -341,9 +341,9 @@ class SalonsControllerUpdateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -379,9 +379,9 @@ class SalonsControllerUpdateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -463,9 +463,9 @@ class SalonsControllerUpdateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPutRequest('/salons/' . $salonId, $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 

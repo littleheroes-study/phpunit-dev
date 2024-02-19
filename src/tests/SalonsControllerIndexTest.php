@@ -62,9 +62,9 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals($expected, $dataCount); // デフォルト取得件数
-        $this->assertEquals('array', gettype($responseData)); // レスポンス型判定
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame($expected, $dataCount); // デフォルト取得件数
+        $this->assertSame('array', gettype($responseData)); // レスポンス型判定
     }
 
     /**
@@ -77,8 +77,8 @@ class SalonsControllerIndexTest extends TestCase
         $this->authenticated();
         $response = $this->execGetRequest('/salons?take=' . $expected);
         $dataCount = count(json_decode($response->getBody()->getContents(), true));
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame($expected, $dataCount);
     }
 
     /**
@@ -91,8 +91,8 @@ class SalonsControllerIndexTest extends TestCase
         $this->authenticated();
         $response = $this->execGetRequest('/salons?skip=90');
         $dataCount = count(json_decode($response->getBody()->getContents(), true));
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame($expected, $dataCount);
     }
 
     /**
@@ -105,8 +105,8 @@ class SalonsControllerIndexTest extends TestCase
         $this->authenticated();
         $response = $this->execGetRequest('/salons?skip=101');
         $dataCount = count(json_decode($response->getBody()->getContents(), true));
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame($expected, $dataCount);
     }
 
     /**
@@ -120,8 +120,8 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons?skip=30&take=30');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals($expected, $responseData[0]['id']);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame($expected, $responseData[0]['id']);
     }
 
     /**
@@ -135,8 +135,8 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons?skip=60&take=30');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals($expected, $responseData[0]['id']);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame($expected, $responseData[0]['id']);
     }
 
     /**
@@ -151,9 +151,9 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons?skip=90&take=30');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals($expectedDataCount, $dataCount);
-        $this->assertEquals($expected, $responseData[0]['id']);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame($expectedDataCount, $dataCount);
+        $this->assertSame($expected, $responseData[0]['id']);
     }
 
     /**
@@ -167,8 +167,8 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons?skip=120&take=30');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame($expected, $dataCount);
     }
 
     /**
@@ -212,8 +212,8 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons?take=101');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame($expected, $dataCount);
     }
 
     /**
@@ -226,8 +226,8 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame($expected, $dataCount);
     }
 
     /**
@@ -241,9 +241,9 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons?skip=-1');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals(1, $responseData[0]['id']);
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame(1, $responseData[0]['id']);
+        $this->assertSame($expected, $dataCount);
     }
 
     /**
@@ -257,9 +257,9 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons?skip=aaa');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals(1, $responseData[0]['id']);
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame(1, $responseData[0]['id']);
+        $this->assertSame($expected, $dataCount);
     }
 
     /**
@@ -273,9 +273,9 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons?skip=');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals(1, $responseData[0]['id']);
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame(1, $responseData[0]['id']);
+        $this->assertSame($expected, $dataCount);
     }
 
     /**
@@ -289,9 +289,9 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons?take=-1');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals(1, $responseData[0]['id']);
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame(1, $responseData[0]['id']);
+        $this->assertSame($expected, $dataCount);
     }
 
     /**
@@ -305,9 +305,9 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons?take=aaa');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals(1, $responseData[0]['id']);
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame(1, $responseData[0]['id']);
+        $this->assertSame($expected, $dataCount);
     }
 
     /**
@@ -321,8 +321,8 @@ class SalonsControllerIndexTest extends TestCase
         $response = $this->execGetRequest('/salons?take=');
         $responseData = json_decode($response->getBody()->getContents(), true);
         $dataCount = count($responseData);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals(1, $responseData[0]['id']);
-        $this->assertEquals($expected, $dataCount);
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame(1, $responseData[0]['id']);
+        $this->assertSame($expected, $dataCount);
     }
 }

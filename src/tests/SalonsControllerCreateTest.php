@@ -48,9 +48,9 @@ class SalonsControllerCreateTest extends TestCase
         $expected = json_encode($expected);
         $this->authenticated();
         $response = $this->execPostRequest('/salons', $baseOptions);
-        $this->assertEquals(StatusCode::CREATED, $response->getStatusCode());
+        $this->assertSame(StatusCode::CREATED, $response->getStatusCode());
         $response = $response->getBody()->getContents();
-        $this->assertEquals($expected, $response);
+        $this->assertSame($expected, $response);
     }
 
     /**
@@ -63,9 +63,9 @@ class SalonsControllerCreateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -93,9 +93,9 @@ class SalonsControllerCreateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -123,9 +123,9 @@ class SalonsControllerCreateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -154,9 +154,9 @@ class SalonsControllerCreateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -184,9 +184,9 @@ class SalonsControllerCreateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -216,9 +216,9 @@ class SalonsControllerCreateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -253,9 +253,9 @@ class SalonsControllerCreateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -290,9 +290,9 @@ class SalonsControllerCreateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -373,9 +373,9 @@ class SalonsControllerCreateTest extends TestCase
         $this->authenticated();
         try {
             $response = $this->execPostRequest('/salons', $baseOptions);
-            $this->assertEquals($expected, $response->getStatusCode());
+            $this->assertSame($expected, $response->getStatusCode());
         } catch (\Exception $e) {
-            $this->assertEquals($expected, $e->getResponse()->getStatusCode());
+            $this->assertSame($expected, $e->getResponse()->getStatusCode());
         }
     }
 

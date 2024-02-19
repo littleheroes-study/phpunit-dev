@@ -68,8 +68,8 @@ class SalonsControllerDetailTest extends TestCase
         ];
         $this->authenticated();
         $response = $this->execGetRequest('/salons/' . $salonId);
-        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
-        $this->assertEquals($expected, json_decode($response->getBody()->getContents(), true));
+        $this->assertSame(StatusCode::OK, $response->getStatusCode());
+        $this->assertSame($expected, json_decode($response->getBody()->getContents(), true));
     }
 
     /**
@@ -81,7 +81,7 @@ class SalonsControllerDetailTest extends TestCase
         try {
             $response = $this->execGetRequest('/salons/' . $salonId);
         } catch (\Exception $e) {
-            $this->assertEquals(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
+            $this->assertSame(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -94,7 +94,7 @@ class SalonsControllerDetailTest extends TestCase
         try {
             $response = $this->execGetRequest('/salons/' . $salonId);
         } catch (\Exception $e) {
-            $this->assertEquals(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
+            $this->assertSame(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -112,7 +112,7 @@ class SalonsControllerDetailTest extends TestCase
         try {
             $response = $this->execGetRequest('/salons/' . $deleteSalonId);
         } catch (\Exception $e) {
-            $this->assertEquals(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
+            $this->assertSame(StatusCode::NOT_FOUND, $e->getResponse()->getStatusCode());
         }
     }
 }
