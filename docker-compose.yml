@@ -42,23 +42,23 @@ services:
     networks:
       - web
 
-  db-test:
-    container_name: db-test
-    build: ./mysql
-    environment:
-      - MYSQL_DATABASE=mysql_php
-      - MYSQL_USER=phper
-      - MYSQL_PASSWORD=drowssap
-      - MYSQL_ROOT_PASSWORD=root
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
-    volumes:  
-      - ./mysql/db-test/data:/var/lib/mysql
-      - ./mysql/db-test/my.cnf:/etc/mysql/conf.d/my.cnf 
-      - ./mysql/db-test/sql:/docker-entrypoint-initdb.d
-    ports:
-      - 3336:3306
-    networks:
-      - web
+  # db-test:
+  #   container_name: db-test
+  #   build: ./mysql
+  #   environment:
+  #     - MYSQL_DATABASE=mysql_php
+  #     - MYSQL_USER=phper
+  #     - MYSQL_PASSWORD=drowssap
+  #     - MYSQL_ROOT_PASSWORD=root
+  #   command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+  #   volumes:  
+  #     - ./mysql/db-test/data:/var/lib/mysql
+  #     - ./mysql/db-test/my.cnf:/etc/mysql/conf.d/my.cnf 
+  #     - ./mysql/db-test/sql:/docker-entrypoint-initdb.d
+  #   ports:
+  #     - 3336:3306
+  #   networks:
+  #     - web
 
 volumes:
   db-store:
