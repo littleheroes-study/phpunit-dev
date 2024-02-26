@@ -87,12 +87,14 @@ class SalonsControllerIndexTest extends TestCase
     public function testIndexOffsetSuccess(): void
     {
         $this->createSalonlist();
-        $expected = 10;
+        $expected1 = 10;
+        $expected2 = 91;
         $this->authenticated();
         $response = $this->execGetRequest('/salons?skip=90');
-        $dataCount = count(json_decode($response->getBody()->getContents(), true));
+        $responseData = json_decode($response->getBody()->getContents(), true);
         $this->assertSame(StatusCode::OK, $response->getStatusCode());
-        $this->assertSame($expected, $dataCount);
+        $this->assertSame($expected1, count($responseData));
+        $this->assertSame($expected2, $responseData[0]['id']);
     }
 
     /**
@@ -104,9 +106,10 @@ class SalonsControllerIndexTest extends TestCase
         $expected = 0;
         $this->authenticated();
         $response = $this->execGetRequest('/salons?skip=101');
-        $dataCount = count(json_decode($response->getBody()->getContents(), true));
+        $responseData = json_decode($response->getBody()->getContents(), true);
         $this->assertSame(StatusCode::OK, $response->getStatusCode());
-        $this->assertSame($expected, $dataCount);
+        $this->assertSame($expected, count($responseData));
+        $this->assertEmpty($responseData);
     }
 
     /**
@@ -115,13 +118,14 @@ class SalonsControllerIndexTest extends TestCase
     public function testIndexSecondPageSuccess(): void
     {
         $this->createSalonlist();
-        $expected = 31;
+        $expected1 = 30;
+        $expected2 = 31;
         $this->authenticated();
         $response = $this->execGetRequest('/salons?skip=30&take=30');
         $responseData = json_decode($response->getBody()->getContents(), true);
-        $dataCount = count($responseData);
         $this->assertSame(StatusCode::OK, $response->getStatusCode());
-        $this->assertSame($expected, $responseData[0]['id']);
+        $this->assertSame($expected1, count($responseData));
+        $this->assertSame($expected2, $responseData[0]['id']);
     }
 
     /**
@@ -130,13 +134,14 @@ class SalonsControllerIndexTest extends TestCase
     public function testIndexThirdPageSuccess(): void
     {
         $this->createSalonlist();
-        $expected = 61;
+        $expected1 = 30;
+        $expected2 = 61;
         $this->authenticated();
         $response = $this->execGetRequest('/salons?skip=60&take=30');
         $responseData = json_decode($response->getBody()->getContents(), true);
-        $dataCount = count($responseData);
         $this->assertSame(StatusCode::OK, $response->getStatusCode());
-        $this->assertSame($expected, $responseData[0]['id']);
+        $this->assertSame($expected1, count($responseData));
+        $this->assertSame($expected2, $responseData[0]['id']);
     }
 
     /**
@@ -169,6 +174,7 @@ class SalonsControllerIndexTest extends TestCase
         $dataCount = count($responseData);
         $this->assertSame(StatusCode::OK, $response->getStatusCode());
         $this->assertSame($expected, $dataCount);
+        $this->assertEmpty($responseData);
     }
 
     /**

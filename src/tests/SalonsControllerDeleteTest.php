@@ -14,7 +14,7 @@ class SalonsControllerDeleteTest extends TestCase
     /**
      * テストデータ作成する
      *
-     * @return void
+     * @return int
      */
     public function createSalon(): int
     {
